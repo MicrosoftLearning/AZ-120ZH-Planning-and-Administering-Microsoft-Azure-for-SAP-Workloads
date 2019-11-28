@@ -52,11 +52,11 @@ lab:
 
 1.  从 **新建** 边栏选项卡，开始创造一个新的 **模板部署（使用自定义模板部署）**
 
-1.  从**自定义部署**边栏选项卡，在**加载 GitHub 快速启动模板**下拉列表中，选择条目 **active-directory-new-domain-ha-2-dc-zones**，并单击**选择模板**。
+1.  从 **自定义部署** 边栏选项卡，在 **加载 GitHub 快速启动模板** 下拉列表中，选择条目 **active-directory-new-domain-ha-2-dc-zones**，并单击 **选择模板**。
 
     > **注意**：或者，你可以通过导航到位于 <https://github.com/Azure/azure-quickstart-templates> 上的 Azure 快速启动模板页面来启动部署，找到以下名称的模板 **新建 2 个 Windows VM、在可用性集中新建 AD 林、域和 2 个 DC**，并通过单击 **部署到 Azure 按钮** 启动其部署。
 
-1.  在**使用可用性区域新建具有 2 DC 的 AD 域**边栏选项卡上，指定以下设置，单击**购买**发起部署：
+1.  在 **使用可用性区域新建具有 2 DC 的 AD 域** 边栏选项卡上，指定以下设置，单击 **购买** 发起部署：
 
     -   订阅：*你的 Azure 订阅名*
 
@@ -68,9 +68,9 @@ lab:
 
     -   位置: *你在上方指定的同一 Azure 区域*
 
-    -   密码：**Pa55w.rd1234**
+    -   密码： **Pa55w.rd1234**
 
-    -   域名：**adatum.com**
+    -   域名： **adatum.com**
 
     -   DnsPrefix：*接受默认值*
 
@@ -237,7 +237,7 @@ $vNet = Get-AzVirtualNetwork -ResourceGroupName $resourceGroupName -Name $vNetNa
 
     -   \ _artifacts 位置：**接受默认值。**
 
-    -   _artifacts 位置Sas 令牌**设为默认值。**
+    -   _artifacts 位置Sas 令牌 **设为默认值。**
 
     -   我同意以上条款和条件：*已启用*
 
@@ -503,7 +503,7 @@ Set-ClusterQuorum -CloudWitness -AccountName $cwStorageAccountName -AccessKey $c
 
 1.  在 i20-ascs-0.adatum.com 的 RDP 会话中，在服务器管理器的 **工具** 菜单中，启动 **Active Directory 管理中心**。
 
-1.  在 Active Directory 管理中心中，导航到**计算机**容器。 
+1.  在 Active Directory 管理中心中，导航到 **计算机** 容器。 
 
 1.  在 Active Directory 管理中心中，将 i20-ascs-0 和 i20-ascs-1 的计算机帐户从计算机容器移动到群集组织单位。
 
@@ -621,9 +621,9 @@ Grant-SmbShareAccess -Name sapmnt -AccountName 'ADATUM\Domain Admins' -AccessRig
 
 #### 任务 1：打开 Cloud Shell
 
-1. 在门户顶部，单击**Cloud Shell**图标以打开“Cloud Shell”窗格，然后选择“PowerShell”作为 Shell。
+1. 在门户顶部，单击 **Cloud Shell** 图标以打开“Cloud Shell”窗格，然后选择“PowerShell”作为 Shell。
 
-1. 在门户底部的**Cloud Shell**命令提示符下，键入以下命令，然后按 **Enter **列出你在此练习中创建的所有资源组：
+1. 在门户底部的 **Cloud Shell** 命令提示符下，键入以下命令，然后按 **输入**列出你在此练习中创建的所有资源组：
 
 ```
 Get-AzResourceGroup | Where-Object {$_.ResourceGroupName -like 'az12003b-*'} | Select-Object ResourceGroupName

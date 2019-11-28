@@ -47,31 +47,31 @@ lab:
 
 1.  如果出现提示，则使用你在本实验室中使用的 Azure 订阅的所有者或参与者角色登录工作或学校或个人 Microsoft 帐户。
 
-1.  在 Azure 门户上，单击**+新建资源**。
+1.  在 Azure 门户上，单击 **+新建资源**。
 
 1.  从 **新建** 边栏选项卡，新建 **模板部署（使用自定义模板部署）**
 
 1.  从 **自定义部署** 边栏选项卡，在 **加载 GitHub 快速启动模板** 下拉列表中，选择条目 **active-directory-new-domain-ha-2-dc**，并单击 **选择模板**。
 
-    > **注意**：或者，你可以通过导航到位于 <https://github.com/Azure/azure-quickstart-templates> 上的 Azure 快速启动模板页面来启动部署，找到以下名称的模板**新建 2 个 Windows VM、在可用性集中新建 AD 林、域和 2 个 DC**，并通过单击**部署到 Azure 按钮**启动其部署。
+    > **注意**：或者，你可以通过导航到位于 <https://github.com/Azure/azure-quickstart-templates> 上的 Azure 快速启动模板页面来启动部署，找到以下名称的模板 **新建 2 个 Windows VM、在可用性集中新建 AD 林、域和 2 个 DC**，并通过单击 **部署到 Azure 按钮**启动其部署。
 
-1.  在**使用 2 个域控制器新建 AD 域**边栏选项卡上，单击**编辑模板**。 
+1.  在 **使用 2 个域控制器新建 AD 域** 边栏选项卡上，单击 **编辑模板**。 
 
-1.  在**编辑模板**边栏选项卡上，找到将值分配给 **adVMSize **变量的行：
+1.  在 **编辑模板** 边栏选项卡上，找到将值分配给 **adVMSize** 变量的行：
 
 ```
 "adVMSize": "Standard_DS2_v2"
 
 ```
 
-1.  在**编辑模板**边栏选项卡上，将 **adVMSize**变量的值设置为 **Standard_D4S_v3**，然后单击**保存**。
+1.  在 **编辑模板** 边栏选项卡上，将 **adVMSize** 变量的值设置为 **Standard_D4S_v3**，然后单击 **保存**。
 
 ```
 "adVMSize": "Standard_D4S_v3"
 
 ```
 
-1.  在**使用 2 个域控制器新建 AD 域**边栏选项卡，指定以下设置并单击“购买”启动部署：
+1.  在 **使用 2 个域控制器新建 AD 域** 边栏选项卡，指定以下设置并单击“购买”启动部署：
 
     -   订阅：*你的 Azure 订阅名*
 
@@ -103,7 +103,7 @@ lab:
 
 ### 任务 2：在同一可用性集中部署运行 Windows Server 2016 的一对 Azure VM。
 
-1.  在实验室计算机的 Azure 门户上单击**+创建资源**。
+1.  在实验室计算机的 Azure 门户上单击 **+创建资源**。
 
 1.  从 **新建** 边栏选项卡，使用以下设置开始预配 **Windows Server 2019 Datacenter** Azure VM：
 
@@ -385,7 +385,7 @@ foreach ($vmName in $vmNames) { Set-AzVMExtension -ResourceGroupName $resourceGr
 
 1.  回到 **存储池** 查看，按以下设置使用 **新建存储池向导** 新建存储池：
 
-    -   名称：**Log Storage Pool**
+    -   名称： **Log Storage Pool**
 
     -   物理盘：*选择 4 个磁盘中的最后一个并将其分配设置为* **自动**
 
@@ -750,7 +750,7 @@ New-AzLoadBalancer -ResourceGroupName $resourceGroupName -Location $location -Na
 
    > **注意**：由于无法再从 Internet 直接访问两个群集 Azure VM，因此你将部署运行 Windows Server 2019 Datacenter 的 Azure VM，该 VM 将用作跳转主机。 
 
-1.  在实验室计算机的 Azure 门户上单击**+创建资源**。
+1.  在实验室计算机的 Azure 门户上单击 **+创建资源**。
 
 1.  在 **新建** 边栏选项卡中，基于 **Windows Server 2019 Datacenter** 图像，开始创建新的 Azure VM。
 
@@ -832,9 +832,9 @@ New-AzLoadBalancer -ResourceGroupName $resourceGroupName -Location $location -Na
 
 #### 任务 1：打开 Cloud Shell
 
-1. 在门户顶部，单击**Cloud Shell**图标以打开“Cloud Shell”窗格，然后选择“PowerShell”作为 Shell。
+1. 在门户顶部，单击 **Cloud Shell** 图标以打开“Cloud Shell”窗格，然后选择“PowerShell”作为 Shell。
 
-1. 在门户底部的**Cloud Shell**命令提示符下，键入以下命令，然后按 **Enter **列出你在此练习中创建的所有资源组：
+1. 在门户底部的 **Cloud Shell** 命令提示符下，键入以下命令，然后按 **输入**列出你在此练习中创建的所有资源组：
 
 ```
 Get-AzResourceGroup | Where-Object {$_.ResourceGroupName -like 'az12001b-*'} | Select-Object ResourceGroupName
@@ -844,13 +844,13 @@ Get-AzResourceGroup | Where-Object {$_.ResourceGroupName -like 'az12001b-*'} | S
 
 #### 任务 2：删除资源组
 
-1. 在 **Cloud Shell** 命令提示符处，键入以下命令，然后按 **Enter** 删除你在此实验中创建的资源组。
+1. 在 **Cloud Shell** 命令提示符处，键入以下命令，然后按 **输入** 删除你在此实验中创建的资源组。
 
 ```
 Get-AzResourceGroup | Where-Object {$_.ResourceGroupName -like 'az12001b-*'} | Remove-AzResourceGroup -Force  
 ```
 
-1. 关闭门户底部的**Cloud Shell**提示符。
+1. 关闭门户底部的 **Cloud Shell** 提示符。
 
 
 > **结果**：完成本练习后，你已经删除了本实验中使用的资源。

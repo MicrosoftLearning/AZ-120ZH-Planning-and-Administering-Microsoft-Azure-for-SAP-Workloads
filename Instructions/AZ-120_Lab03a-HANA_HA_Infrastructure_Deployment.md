@@ -98,7 +98,7 @@ az network vnet subnet list --resource-group $RESOURCE_GROUP_NAME --vnet-name $V
 
 1.  在**SAP NetWeaver 3 层(托管磁盘)**边栏选项上，单击**编辑模板**
 
-1.  在**编辑模板**边栏选项卡上，找到名为** images **的变量，找到变量定义中的 SLES 12 部分，将 `sku` 键的值更改为 `12-SP4`，如下所示：
+1.  在**编辑模板**边栏选项卡上，找到名为 **images** 的变量，找到变量定义中的 SLES 12 部分，将 `sku` 键的值更改为 `12-SP4`，如下所示：
 
 ```
 "sku": "12-SP4", 
@@ -231,13 +231,13 @@ az network vnet subnet list --resource-group $RESOURCE_GROUP_NAME --vnet-name $V
 
 1.  在实验计算机的 Azure 门户中，导航到 **i20-db-0** Azure VM 边栏选项卡。
 
-1.  从**i20-db-0** 边栏选项卡，导航到**网络**边栏选项卡。 
+1.  从 **i20-db-0** 边栏选项卡，导航到 **网络** 边栏选项卡。 
 
-1.  从**i20-db-0 - Networking**边栏选项卡，导航到 i20-db-0 网络接口。 
+1.  从 **i20-db-0 - 联网** 边栏选项卡，导航到 i20-db-0 网络接口。 
 
 1.  从 i20-db-0 的网络接口边栏选项卡，导航到其 IP 配置边栏选项卡，显示其 **ipconfig1 **边栏选项卡。
 
-1.  在**ipconfig1**边栏选项卡上，将专用 IP 地址设置为**10.3.0.20**，将其分配更改为**静态**，然后保存更改。
+1.  在 **ipconfig1** 边栏选项卡上，将专用 IP 地址设置为 **10.3.0.20**，将其分配更改为**静态**，然后保存更改。
 
 1.  在 Azure 门户中，导航到 **i20-db-1**Azure VM 的边栏选项卡。
 
@@ -258,7 +258,7 @@ az network vnet subnet list --resource-group $RESOURCE_GROUP_NAME --vnet-name $V
 
 1.  在与 az12003a-vm0 的 RDP 会话中，在服务器管理器中，导航到 **本地服务器** 视图并关闭 **IE 增强安全配置**。
 
-1.  在 az12003a-vm0 的 RDP 会话中，从 [**https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html**](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)下载并安装 PuTTY。
+1.  在 az12003a-vm0 的 RDP 会话中，从 [**https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html**](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) 下载并安装 PuTTY。
 
 1.  使用 PuTTY 通过 SSH 连接 **i20-db-0** Azure VM。确认安全警报，并在出现提示时提供以下凭据：
 
@@ -277,7 +277,7 @@ az network vnet subnet list --resource-group $RESOURCE_GROUP_NAME --vnet-name $V
 sudo su -
 ```
 
-1.  提示输入密码时，请键入 **Pa55w.rd1234** 并按下 **Enter**。 
+1.  提示输入密码时，请键入 **Pa55w.rd1234** 并按下 **输入**。 
 
 1.  在与 i20-db-0 的 SSH 会话中，验证所有与 SAP HANA 相关的卷（**/usr/sap**、**/hana/shared**、**/hana/backup**、**/hana/data** 和 **/hana/logs**）通过运行以下命令适当安装：
 
@@ -414,13 +414,13 @@ vi /root/.ssh/authorized_keys
 
 1.  保存更改并关闭编辑器。
 
-1.  要验证配置是否成功，请在 i20-db-0 的 SSH 会话中，通过运行以下命令建立从 i20-db-0 到 i20-db-1 的 SSH 会话，作为**根**： 
+1.  要验证配置是否成功，请在 i20-db-0 的 SSH 会话中，通过运行以下命令建立从 i20-db-0 到 i20-db-1 的 SSH 会话，作为 **根**： 
 
 ```
 ssh root@i20-db-1
 ```
 
-1.  当系统提示你是否确定要继续连接时，请键入"yes"并按**Enter**。 
+1.  当系统提示你是否确定要继续连接时，请键入"yes"并按 **输入**。 
 
 1.  确保未提示你输入密码。
 
@@ -436,7 +436,7 @@ exit
 ssh root@i20-db-0
 ```
 
-1.  当系统提示你是否确定要继续连接时，请键入"yes"并按**Enter**。 
+1.  当系统提示你是否确定要继续连接时，请键入"yes"并按**输入**。 
 
 1.  确保未提示你输入密码。
 
@@ -454,17 +454,17 @@ exit
 yast
 ```
 
-1.  在 **YaST 控制中心**，选择 **软件 - \>附加产品** 并按 **Enter**。将加载 **包管理器**。
+1.  在 **YaST 控制中心**，选择 **软件 - \>附加产品** 并按 **输入**。将加载 **包管理器**。
 
 1.  在**已安装的附加产品**屏幕上，验证是否已安装**公有云模块**。然后，按两次** F9** 返回到 shell 提示符。
 
-1.  在与 i20-db-0 的 SSH 会话中，运行以下命令更新操作系统（出现提示时，键入 **y** 并按下 **Enter**）：
+1.  在与 i20-db-0 的 SSH 会话中，运行以下命令更新操作系统（出现提示时，键入 **y** 并按下 **输入**）：
 
 ```
 zypper update
 ```
 
-1. 在与 i20-db-0 的 SSH 会话中，运行以下命令以更新 HA 扩展依赖项（出现提示时，键入 **y**,按下 **Enter**，通读 **SUSE 最终用户许可协议**，键入 **q**，键入 **yes** 同意许可条款的条款，并再次按下 **Enter**）。
+1. 在与 i20-db-0 的 SSH 会话中，运行以下命令以更新 HA 扩展依赖项（出现提示时，键入 **y**,按下 **输入**，通读 **SUSE 最终用户许可协议**，键入 **q**，键入 **yes** 同意许可条款的条款，并再次按下 **输入**）。
 
 ```
 zypper install sle-ha-release fence-agents
@@ -492,11 +492,11 @@ ha-cluster-init
 
     -   你依然想继续吗 (y/n)？ **y**
 
-    -   /root/.ssh/id_rsa 已经存在 - 要覆盖吗 (y/n)？**y**
+    -   /root/.ssh/id_rsa 已经存在 - 要覆盖吗 (y/n)？**n**
 
-    -   ring0 的地址 [10.3.0.20]：**ENTER**
+    -   ring0 的地址 [10.3.0.20]：**输入**
 
-    -   ring0 的端口 [5405]：**ENTER**
+    -   ring0 的端口 [5405]：**输入**
 
     -   你想使用 SBD 吗 (y/n)？**n**
 
@@ -520,9 +520,9 @@ ha-cluster-join
 
     -   /root/.ssh/id\_dsa 已存在 - 要覆盖吗？ **否**
 
-    -   ring0 的地址 [10.3.0.21]：**ENTER**
+    -   ring0 的地址 [10.3.0.21]：**输入**
 
-1.  在与 i20-db-0 基于 PuTTY 的 SSH 会话中，运行以下命令设置 **hacluster** 帐户密码为 **Pa55w.rd1234**（出现提示时键入新密码）： 
+1.  在与 i20-db-0 基于 PuTTY 的 SSH 会话中，运行以下命令设置 **hacluster** 帐户密码为 **Pa55w.rd1234** （出现提示时键入新密码）： 
 ```
 passwd hacluster
 
@@ -532,7 +532,7 @@ passwd hacluster
 
 ### 任务 2：查看 corosync 配置
 
-1.  在与 az12003a-vm0 的 RDP 会话中，在与 i20-db-0 基于 PuTTY 的 SSH 会话中，运行以下命令在 vi 编辑器里打开 **/etc/corosync/corosync.conf** 文件：
+1.  在到 az12003a-vm0 的 RDP 会话中和到 i20-db-0 的基于 PuTTY 的 SSH 会话中，通过运行以下命令查看 **/etc/corosync/corosync.conf** 文件的内容：
 
 ```
 cat /etc/corosync/corosync.conf
@@ -685,9 +685,9 @@ crm configure load update crm-fencing.txt
 
 #### 任务 1：打开 Cloud Shell
 
-1. 在门户顶部，单击**Cloud Shell**图标以打开“Cloud Shell”窗格，然后选择“Bash”作为 Shell。
+1. 在门户顶部，单击 **Cloud Shell** 图标以打开“Cloud Shell”窗格，然后选择“Bash”作为 Shell。
 
-1. 在门户底部的**Cloud Shell**命令提示符下，键入以下命令，然后按 **Enter **列出你在此练习中创建的所有资源组：
+1. 在门户底部的 **Cloud Shell** 命令提示符下，键入以下命令，然后按 **输入**列出你在此练习中创建的所有资源组：
 
 ```
 az group list --query "[?starts_with(name,'az12003a-')]".name --output tsv
@@ -697,13 +697,13 @@ az group list --query "[?starts_with(name,'az12003a-')]".name --output tsv
 
 #### 任务 2：删除资源组
 
-1. 在** Cloud Shell **命令提示符处，键入以下命令，然后按**Enter ** 删除你在此实验中创建的资源组。
+1. 在 **Cloud Shell** 命令提示符处，键入以下命令，然后按 **输入** 删除你在此实验中创建的资源组。
 
 ```
 az group list --query "[?starts_with(name,'az12003a-')]".name --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
 ```
 
-1. 关闭门户底部的**Cloud Shell**提示符。
+1. 关闭门户底部的 **Cloud Shell** 提示符。
 
 
 > **结果**：完成本练习后，你已经删除了本实验中使用的资源。

@@ -31,7 +31,7 @@ lab:
 
 ## 要求
 
--   具有足够数目可用 DSv3 vCPU (2 x 4) 和 DSv2 (1 x 1) vCPU 的 Microsoft Azure 订阅
+-   具有足够数量的可用 DSv3 vCPU (2 x 4) 和 DSv2 (1 x 1) vCPU 的 Microsoft Azure 订阅
 
 -   运行 Windows 10、Windows Server 2016 或 Windows Server 2019 的实验室计算机可以访问 Azure
 
@@ -50,7 +50,7 @@ lab:
 
 1.  在 Azure 门户上，单击 **+新建资源**。
 
-1.  在**新建**边栏选项卡中，基于 **SLES 12 SP3 (BYOS)** 图像，开始使用以下设置创建新的 Azure VM：
+1.  在 **新建** 边栏选项卡中，基于 **SLES 12 SP3 (BYOS)** 图像，开始使用以下设置创建新的 Azure VM：
 
     -   订阅： *你的 Azure 订阅名*
 
@@ -513,7 +513,7 @@ vi /root/.ssh/authorized_keys
 vi /etc/ssh/sshd_config
 ```
 
-1.  在**/etc/ssh/sshd\_config**文件里，找到 **PermitRootLogin** 和 **AuthorizedKeysFile** 条目，并按如下方式配置它们（如果需要，请删除前导 # 字符：
+1.  在 **/etc/ssh/sshd\_config** 文件里，找到 **PermitRootLogin** 和 **AuthorizedKeysFile** 条目，并按如下方式配置它们（如果需要，请删除前导 # 字符：
 ```
 PermitRootLogin yes
 AuthorizedKeysFile      /root/.ssh/authorized_keys
@@ -529,13 +529,13 @@ systemctl restart sshd
 
 1.  在 az12001a-vm1 上重复前面的四个步骤。
 
-1.  要验证配置是否成功，请在“Cloud Shell”窗格中，在 az12001a-vm0 的 SSH 会话中，通过运行以下命令建立从 az12001a-vm0 到 az12001a-vm1 的 SSH 会话，作为**根**： 
+1.  要验证配置是否成功，请在“Cloud Shell”窗格中，在 az12001a-vm0 的 SSH 会话中，通过运行以下命令建立从 az12001a-vm0 到 az12001a-vm1 的 SSH 会话，作为 **根**： 
 
 ```
 ssh root@az12001a-vm1
 ```
 
-1.  当系统提示你是否确定要继续连接时，请键入 `yes` 并按**回车**。 
+1.  当系统提示你是否确定要继续连接时，请键入 `yes` 并按 **回车**。 
 
 1.  确保未提示你输入密码。
 
@@ -551,13 +551,13 @@ exit
 exit
 ```
 
-1.  要验证配置是否成功，请在“Cloud Shell”窗格中，在 az12001a-vm1 的 SSH 会话中，通过运行以下命令建立从 az12001a-vm1 到 az12001a-vm0 的 SSH 会话，作为**根**： 
+1.  要验证配置是否成功，请在“Cloud Shell”窗格中，在 az12001a-vm1 的 SSH 会话中，通过运行以下命令建立从 az12001a-vm1 到 az12001a-vm0 的 SSH 会话，作为 **根**： 
 
 ```
 ssh root@az12001a-vm0
 ```
 
-1.  当系统提示你是否确定要继续连接时，请键入 `yes` 并按**回车**。 
+1.  当系统提示你是否确定要继续连接时，请键入 `yes` 并按 **回车**。 
 
 1.  确保未提示你输入密码。
 
@@ -601,23 +601,23 @@ exit
 
 1.  在 Azure 门户中，导航到 **az12001a-vm0** Azure VM 的边栏选项卡。
 
-1.  从 **az12001a-vm0** 边栏选项卡，导航到**网络**边栏选项卡。 
+1.  从 **az12001a-vm0** 边栏选项卡，导航到 **网络** 边栏选项卡。 
 
-1.  从**az12001a-vm0 - 网络**边栏选项卡，导航到 az12001a-vm0 的网络接口。 
+1.  从**az12001a-vm0 - 网络** 边栏选项卡，导航到 az12001a-vm0 的网络接口。 
 
 1.  从 az12001a-vm0 的网络接口边栏选项卡，导航到其 IP 配置边栏选项卡，显示其 **ipconfig1** 边栏选项卡。
 
-1.  在 **ipconfig1** 边栏选项卡上，将专用 IP 地址分配设置为**静态**，然后保存更改。
+1.  在 **ipconfig1** 边栏选项卡上，将专用 IP 地址分配设置为 **静态**，然后保存更改。
 
 1.  在 Azure 门户中，导航到 **az12001a-vm1** Azure VM 的边栏选项卡。
 
-1.  从 **az12001a-vm1** 边栏选项卡，导航到**网络**边栏选项卡。 
+1.  从 **az12001a-vm1** 边栏选项卡，导航到 **网络** 边栏选项卡。 
 
-1.  从 **az12001a-vm1 - 网络**边栏选项卡，导航到 az12001a-vm1 的网络接口。 
+1.  从 **az12001a-vm1 - 网络** 边栏选项卡，导航到 az12001a-vm1 的网络接口。 
 
 1.  从 az12001a-vm1 的网络接口边栏选项卡，导航到其 IP 配置边栏选项卡，显示其 **ipconfig1** 边栏选项卡。
 
-1.  在 **ipconfig1** 边栏选项卡上，将专用 IP 地址分配设置为**静态**，然后保存更改。
+1.  在 **ipconfig1** 边栏选项卡上，将专用 IP 地址分配设置为 **静态**，然后保存更改。
 
 
 ### 任务 2：创建和配置处理入站流量的 Azure 负载均衡器
@@ -833,9 +833,9 @@ az network lb outbound-rule create --resource-group $RESOURCE_GROUP_NAME --lb-na
 
 #### 任务 1：打开 Cloud Shell
 
-1. 在门户顶部，单击**Cloud Shell**图标以打开“Cloud Shell”窗格，然后选择“Bash”作为 Shell。
+1. 在门户顶部，单击 **Cloud Shell** 图标以打开“Cloud Shell”窗格，然后选择“Bash”作为 Shell。
 
-1. 在门户底部的**Cloud Shell**命令提示符下，键入以下命令，然后按 **回车** 列出你在此练习中创建的所有资源组：
+1. 在门户底部的 **Cloud Shell** 命令提示符下，键入以下命令，然后按 **回车** 列出你在此练习中创建的所有资源组：
 
 ```
 az group list --query "[?starts_with(name,'az12001a-')]".name --output tsv
@@ -845,13 +845,13 @@ az group list --query "[?starts_with(name,'az12001a-')]".name --output tsv
 
 #### 任务 2：删除资源组
 
-1. 在** Cloud Shell **命令提示符处，键入以下命令，然后按 **回车** 删除你在此实验中创建的资源组。
+1. 在 **Cloud Shell** 命令提示符处，键入以下命令，然后按 **回车** 删除你在此实验中创建的资源组。
 
 ```
 az group list --query "[?starts_with(name,'az12001a-')]".name --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
 ```
 
-1. 关闭门户底部的**Cloud Shell**提示符。
+1. 关闭门户底部的 **Cloud Shell** 提示符。
 
 
 > **结果**：完成本练习后，你已经删除了本实验中使用的资源。
