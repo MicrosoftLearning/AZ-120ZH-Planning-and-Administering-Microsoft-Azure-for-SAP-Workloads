@@ -1,21 +1,15 @@
-﻿---
-lab:
-    title: '9a: 在运行 Linux 的 Azure VM 上实施 SAP 架构'
-    module: '模块 9：将 SAP 工作负荷迁移至 Azure'
----
-
-# AZ 120 模块 9：将 SAP 工作负荷迁移至 Azure
-# 实验室 9a: 在运行 Linux 的 Azure VM 上实施 SAP 架构
+﻿# AZ 120 模块 3：实施 Azure 上的 SAP
+# 实验室 3a: 在运行 Linux 的 Azure VM 上实施 SAP 架构
 
 预计用时：120 分钟
 
 本实验室中的所有任务都是从 Azure 门户执行的（包括 Bash Cloud Shell 会话）  
 
-   > **注意**：如果不使用 Cloud Shell，则必须在实验室虚拟机上安装 Azure CLI 模块，获取网址：[**https://docs.microsoft.com/zh-cn/cli/azure/install-azure-cli-windows?view=azure-cli-latest**](https://docs.microsoft.com/zh-cn/cli/azure/install-azure-cli-windows?view=azure-cli-latest).
+   > **注意**：不使用 Cloud Shell 时，实验室虚拟机上必须已安装 Azure CLI [**https://docs.microsoft.com/zh-cn/cli/azure/install-azure-cli-windows?view=azure-cli-latest**](https://docs.microsoft.com/zh-cn/cli/azure/install-azure-cli-windows?view=azure-cli-latest)。
 
 实验室文件：无
 
-## 方案
+## 应用场景
   
 为准备在 Azure 上部署 SAP NetWeaver，Adatum Corporation 希望实施一个演示，演示在运行 Linux SUSE 发行版的 Azure VM 上实施高度可用的 SAP NetWeaver 过程。
 
@@ -54,37 +48,37 @@ lab:
 
 1.  在 Cloud Shell 窗格中，运行以下命令以指定要为此实验室创建资源的支持可用性区域的 Azure 区域（用 Azure 区域的名替换 `<region>`）：
 
-```
-LOCATION='<region>'
-```
+    ```
+    LOCATION='<region>'
+    ```
 
 1.  在 Cloud Shell 窗格中，运行以下命令以创建指定区域的资源组：
 
-```
-RESOURCE_GROUP_NAME='az12003a-sap-RG'
+    ```
+    RESOURCE_GROUP_NAME='az12003a-sap-RG'
 
-az group create --resource-group $RESOURCE_GROUP_NAME --location $LOCATION
-```
+    az group create --resource-group $RESOURCE_GROUP_NAME --location $LOCATION
+    ```
 
 1.  在 Cloud Shell 窗格中，运行以下命令以在你创建的资源组中创建具有单个子网的虚拟网络：
 
-```
-VNET_NAME='az12003a-sap-vnet'
+    ```
+    VNET_NAME='az12003a-sap-vnet'
 
-VNET_PREFIX='10.3.0.0/16'
+    VNET_PREFIX='10.3.0.0/16'
 
-SUBNET_NAME='sapSubnet'
+    SUBNET_NAME='sapSubnet'
 
-SUBNET_PREFIX='10.3.0.0/24'
+    SUBNET_PREFIX='10.3.0.0/24'
 
-az network vnet create --resource-group $RESOURCE_GROUP_NAME --location $LOCATION --name $VNET_NAME --address-prefixes $VNET_PREFIX --subnet-name $SUBNET_NAME --subnet-prefixes $SUBNET_PREFIX
-```
+    az network vnet create --resource-group $RESOURCE_GROUP_NAME --location $LOCATION --name $VNET_NAME --address-prefixes $VNET_PREFIX --subnet-name $SUBNET_NAME --subnet-prefixes $SUBNET_PREFIX
+    ```
 
 1.  在 Cloud Shell 窗格中，运行以下命令以标识新创建的虚拟网络的子网资源 ID：
 
-```
-az network vnet subnet list --resource-group $RESOURCE_GROUP_NAME --vnet-name $VNET_NAME --query "[?name == '$SUBNET_NAME'].id" --output tsv
-```
+    ```
+    az network vnet subnet list --resource-group $RESOURCE_GROUP_NAME --vnet-name $VNET_NAME --query "[?name == '$SUBNET_NAME'].id" --output tsv
+    ```
 
 1.  将结果值复制到剪贴板。需要在下一个任务中使用它。
 
@@ -94,19 +88,9 @@ az network vnet subnet list --resource-group $RESOURCE_GROUP_NAME --vnet-name $V
 
     > **注意**：确保使用 Microsoft Edge 或第三方浏览器。请勿使用 Internet Explorer。
 
-1.  在标题为 **使用市场映像的 SAP NetWeaver 3 层兼容模板 - MD** 的页面上，单击 **部署到 Azure**。这将自动将你的浏览器重定向到 Azure 门户并显示 **SAP NetWeaver 3 层（托管磁盘）** 边栏选项卡。
+1.  在标题为**使用市场映像的 SAP NetWeaver 3 层兼容模板 - MD**的页面上，单击**部署到 Azure**。这将自动将你的浏览器重定向到 Azure 门户并显示 **SAP NetWeaver 3 层（托管磁盘）**边栏选项卡。
 
-1.  在**SAP NetWeaver 3 层(托管磁盘)**边栏选项上，单击**编辑模板**
-
-1.  在**编辑模板**边栏选项卡上，找到名为 **images** 的变量，找到变量定义中的 SLES 12 部分，将 `sku` 键的值更改为 `12-SP4`，如下所示：
-
-```
-"sku": "12-SP4", 
-```
-
-1.  单击**保存**。 
-
-1.  在**SAP NetWeaver 3 层(托管磁盘)**边栏选项卡上，使用以下设置启动部署：
+1.  在 **SAP NetWeaver 3 层（托管磁盘）**边栏选项卡，使用以下设置启动部署：
 
     -   订阅：*你的 Azure 订阅名*
 
@@ -114,17 +98,17 @@ az network vnet subnet list --resource-group $RESOURCE_GROUP_NAME --vnet-name $V
 
     -   位置：*你在本次练习的第一个任务中指定的 Azure 区域*
 
-    -   SAP 系统 ID：**I20**
+    -   SAP 系统 ID： **I20**
 
     -   堆栈类型：**ABAP**
 
     -   Os 类型：**TCP 12**
 
-    -   Dbtype：**HANA**
+    -   Dbtype： **HANA**
 
     -   SAP 系统大小：**演示**
 
-    -   系统可用性： **HA**
+    -   系统可用性：**HA**
 
     -   管理员用户名：**student**
 
@@ -132,23 +116,30 @@ az network vnet subnet list --resource-group $RESOURCE_GROUP_NAME --vnet-name $V
 
     -   管理员密码或密钥：**Pa55w.rd1234**
 
-    -   子网 ID：*你在上一个任务中复制到剪贴板的值*
+    -   子网 ID： *你在上一个任务中复制到剪贴板的值*
 
-    -   可用性区域**1,2**
+    -   可用性区域 **1,2**
 
-    -   位置：**[resourceGroup().location]**
+    -   位置： **[resourceGroup().location]**
 
-    -   _Artifacts 位置：**https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/sap-3-tier-marketplace-image-md/**
+    -   _Artifacts 位置： **https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/sap-3-tier-marketplace-image-md/**
 
     -   _artifacts 位置 Sas 令牌：*留空*
 
 1.  请勿等待部署完成，而是继续进行下一项任务。 
 
+    > **注意**： 如果在 CustomScriptExtension 组件部署期间，部署失败并出现 **“冲突”** 错误消息，请按以下步骤修正此问题：
+
+       - 在 Azure 门户中的 **“部署”** 边栏选项卡上，查看部署详细信息并确定 CustomScriptExtension 安装失败的 VM
+       - 在 Azure 门户中，导航到上一步中确定的 VM 的边栏选项卡，选择 **“扩展”**，从 **“扩展”** 边栏选项卡中删除 CustomScript 扩展
+       - 在 Azure 门户中，导航到 **“az12003a-sap-RG”** 资源组边栏选项卡，选择 **“部署”**，选择指向失败部署的链接，然后选择 **“重新部署”**，选择目标资源组 (**az12003a-sap-RG**) 并提供根帐户的密码 (**Pa55w.rd1234**)。
+
+
 ### 任务 3：部署跳转主机
 
    > **注意**：由于无法从 Internet 访问你在上一个任务中部署的 Azure VM，因此你将部署运行 Windows Server 2019 Datacenter 的 Azure VM 作为跳转主机。 
 
-1.  在实验室计算机的 Azure 门户上单击**+创建资源**。
+1.  在实验室计算机的 Azure 门户中，单击 **“+ 创建资源”**。
 
 1.  在 **新建** 边栏选项卡中，基于 **Windows Server 2019 Datacenter** 图像，开始创建新的 Azure VM。
 
@@ -160,7 +151,7 @@ az network vnet subnet list --resource-group $RESOURCE_GROUP_NAME --vnet-name $V
 
     -   虚拟机名称：**az12003a-vm0**
 
-    -   区域：*在本练习的上一个任务中部署 Azure VM 的相同 Azure 区域*
+    -   区域： *在本练习的上一个任务中部署 Azure VM 的相同 Azure 区域*
 
     -   可用性选项：**无需基础结构冗余**
 
@@ -168,17 +159,17 @@ az network vnet subnet list --resource-group $RESOURCE_GROUP_NAME --vnet-name $V
 
     -   大小：**标准 D2s v3**
 
-    -   用户名：**Student**
+    -   用户名称：**学生**
 
     -   密码：**Pa55w.rd1234**
 
-    -   公共入站端口：**允许选定的端口**
+    -   公共入站端口： **允许选定的端口**
 
     -   选择入站端口：**RDP (3389)**
 
     -   是否已拥有 Windows 许可证？：**否**
 
-    -   操作系统磁盘类型：**标准 HDD**
+    -   OS 磁盘类型：**标准 HDD**
 
     -   虚拟网络：**az12003a-sap-vnet**
 
@@ -188,27 +179,27 @@ az network vnet subnet list --resource-group $RESOURCE_GROUP_NAME --vnet-name $V
 
     -   NIC 网络安全组：**基本**
 
-    -   公共入站端口：**允许选定的端口**
+    -   公共入站端口： **允许选定的端口**
 
     -   选择入站端口：**RDP (3389)**
 
-    -   加速网络：**关**
+    -   加速网络：**关闭**
 
     -   将此虚拟机置于现有负载均衡解决方案之后：**否**
 
     -   免费启用基本计划：**否**
 
-    -   启动诊断：**关**
+    -   启动诊断：**关闭**
 
-    -   OS 来宾诊断：**关**
+    -   OS 来宾诊断：**关闭**
 
-    -   系统分配的托管标识：**关**
+    -   系统分配的托管标识：**关闭**
 
-    -   使用 AAD 凭据登录（预览）：**关**
+    -   使用 AAD 凭据登录（预览）：**关闭**
 
-    -   启用自动关闭：**关**
+    -   启用自动关闭：**关闭**
 
-    -   启用备份：**关**
+    -   启用备份：**关闭**
 
     -   扩展：*无*
 
@@ -229,25 +220,25 @@ az network vnet subnet list --resource-group $RESOURCE_GROUP_NAME --vnet-name $V
 
    > **注意**：在开始此任务之前，请确保你在之前练习中启动的模板部署已完成。 
 
-1.  在实验计算机的 Azure 门户中，导航到 **i20-db-0** Azure VM 边栏选项卡。
+1.  在实验室计算机的 Azure 门户中，导航到 **i20-db-0** Azure VM 的边栏选项卡。
 
-1.  从 **i20-db-0** 边栏选项卡，导航到 **网络** 边栏选项卡。 
+1.  从 **“i20-db-0”** 边栏选项卡，导航到 **“网络”** 边栏选项卡。 
 
-1.  从 **i20-db-0 - 联网** 边栏选项卡，导航到 i20-db-0 网络接口。 
+1.  从 **“i20-db-0 - 网络”** 边栏选项卡，导航到 i20-db-0 的网络接口。 
 
-1.  从 i20-db-0 的网络接口边栏选项卡，导航到其 IP 配置边栏选项卡，显示其 **ipconfig1 **边栏选项卡。
+1.  从 i20-db-0 的网络接口边栏选项卡，导航到其“IP 配置”边栏选项卡，其中显示其 **“ipconfig1”** 边栏选项卡。
 
-1.  在 **ipconfig1** 边栏选项卡上，将专用 IP 地址设置为 **10.3.0.20**，将其分配更改为**静态**，然后保存更改。
+1.  在 **“ipconfig1”** 边栏选项卡上，将专用 IP 地址设置为 **“10.3.0.20”**，将其分配更改为 **“静态”**，然后保存更改。
 
-1.  在 Azure 门户中，导航到 **i20-db-1**Azure VM 的边栏选项卡。
+1.  在 Azure 门户中，导航到 **i20-db-1** Azure VM 的边栏选项卡。
 
-1.  从**i20-db-1** 边栏选项卡，导航到**网络**边栏选项卡。 
+1.  从 **“i20-db-1”** 边栏选项卡，导航到 **“网络”** 边栏选项卡。 
 
-1.  从**i20-db-1 - Networking**边栏选项卡，导航到 i20-db-1 网络接口。 
+1.  从 **“i20-db-1 - 网络”** 边栏选项卡，导航到 i20-db-1 的网络接口。 
 
-1.  从 i20-db-1 的网络接口边栏选项卡，导航到其 IP 配置边栏选项卡，显示其 **ipconfig1 **边栏选项卡。
+1.  从 i20-db-1 的网络接口边栏选项卡，导航到其“IP 配置”边栏选项卡，其中显示其 **“ipconfig1”** 边栏选项卡。
 
-1.  在**ipconfig1**边栏选项卡上，将专用 IP 地址设置为**10.3.0.21**，将其分配更改为**静态**，然后保存更改。
+1.  在 **“ipconfig1”** 边栏选项卡上，将专用 IP 地址设置为 **“10.3.0.21”**，将其分配更改为 **“静态”**，然后保存更改。
 
 
 ### 任务 2：连接到数据库层 Azure VM。
@@ -256,9 +247,9 @@ az network vnet subnet list --resource-group $RESOURCE_GROUP_NAME --vnet-name $V
 
 1.  在 **az12003a-vm0** 边栏选项卡中，使用远程桌面连接到 Azure VM az12003a-vm0。 
 
-1.  在与 az12003a-vm0 的 RDP 会话中，在服务器管理器中，导航到 **本地服务器** 视图并关闭 **IE 增强安全配置**。
+1.  在与 az12003a-vm0 的 RDP 会话中，在服务器管理器中，导航到**本地服务器**视图并关闭 **IE 增强安全配置**。
 
-1.  在 az12003a-vm0 的 RDP 会话中，从 [**https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html**](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) 下载并安装 PuTTY。
+1.  在与 az12003a-vm0 的 RDP 会话中，从 [**https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html**](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) 下载并安装 PuTTY。
 
 1.  使用 PuTTY 通过 SSH 连接 **i20-db-0** Azure VM。确认安全警报，并在出现提示时提供以下凭据：
 
@@ -273,17 +264,17 @@ az network vnet subnet list --resource-group $RESOURCE_GROUP_NAME --vnet-name $V
 
 1.  在 i20-db-0 Azure VM 的 PuTTY SSH 会话中，运行以下命令以提升权限： 
 
-```
-sudo su -
-```
+     ```
+     sudo su -
+     ```
 
-1.  提示输入密码时，请键入 **Pa55w.rd1234** 并按下 **输入**。 
+1.  提示输入密码时，请键入 **Pa55w.rd1234** 并按下 **Enter**。 
 
-1.  在与 i20-db-0 的 SSH 会话中，验证所有与 SAP HANA 相关的卷（**/usr/sap**、**/hana/shared**、**/hana/backup**、**/hana/data** 和 **/hana/logs**）通过运行以下命令适当安装：
+1.  在与 i20-db-0 的 SSH 会话中，验证所有与 SAP HANA 相关的卷（**/usr/sap**、**/hana/shared**、**/hana/backup**、**/hana/data**和 **/hana/logs**）通过运行以下命令适当安装：
 
-```
-df -h
-```
+    ```
+    df -h
+    ```
 
 1.  在 i20-db-1 Azure VM 上重复上述步骤。
 
@@ -292,51 +283,51 @@ df -h
 
 1.  在 i20-db-0 的 SSH 会话中，通过运行以下命令在 VI 编辑器中（或使用任何其他编辑器）打开文件 **/etc/ssh/sshd\_config** ：
 
-```
-vi /etc/ssh/sshd_config
-```
+    ```
+    vi /etc/ssh/sshd_config
+    ```
 
-1.  在 **/etc/ssh/sshd\_config** 文件里，找到 **PermitRootLogin** 和 **AuthorizedKeysFile** 条目，并按如下方式配置它们：
-```
-PermitRootLogin yes
-AuthorizedKeysFile      /root/.ssh/authorized_keys
-```
+1.  在**/etc/ssh/sshd\_config**文件里，找到 **PermitRootLogin** 和 **AuthorizedKeysFile** 条目，并按如下方式配置它们：
+    ```
+    PermitRootLogin yes
+    AuthorizedKeysFile      /root/.ssh/authorized_keys
+    ```
 
 1.  保存更改并关闭编辑器。
 
-1.  在与 i20-db-0 的 SSH 会话中以及，通过运行以下命令重启 sshd daemon：
+1.  在与 i20-db-0 的 SSH 会话中，通过运行以下命令重启 sshd daemon：
 
-```
-systemctl restart sshd
-```
+    ```
+    systemctl restart sshd
+    ```
 
 1.  在 i20-db-1 Azure VM 上重复前面的四个步骤。
 
 1.  在 i20-db-0 的 SSH 会话中，通过运行以下命令生成无密码的 SSH 密钥：
 
-```
-ssh-keygen -tdsa
-```
+    ```
+    ssh-keygen -tdsa
+    ```
 
 1.  出现提示时，按 **回车键** 三次，然后通过运行以下命令显示密钥： 
 
-```
-cat /root/.ssh/id_dsa.pub
-```
+    ```
+    cat /root/.ssh/id_dsa.pub
+    ```
 
 1.  将密钥值复制到剪贴板中。
 
-1.  在与 i20-db-1 的 SSH 会话中，通过运行以下命令创建 **/root/.ssh/** 目录：
+1.  在与 i20-db-1 的 SSH 会话中，通过运行以下命令创建**/root/.ssh/**目录：
 
-```
-mkdir /root/.ssh
-```
+    ```
+    mkdir /root/.ssh
+    ```
 
-1.  在与 i20-db-1 的 SSH 会话中，通过运行以下命令在 vi 编辑器里打开 **/root/.ssh/authorized\_keys** 文件：
+1.  在与 i20-db-1 的 SSH 会话中，通过运行以下命令在 vi 编辑器里打开**/root/.ssh/authorized\_keys**文件：
 
-```
-vi /root/.ssh/authorized_keys
-```
+    ```
+    vi /root/.ssh/authorized_keys
+    ```
 
 1.  在编辑器窗口中，粘贴你在 i20-db-1 上生成的密钥。
 
@@ -344,23 +335,23 @@ vi /root/.ssh/authorized_keys
 
 1.  在 i20-db-1 的 SSH 会话中，通过运行以下命令生成无密码的 SSH 密钥：
 
-```
-ssh-keygen -tdsa
-```
+    ```
+    ssh-keygen -tdsa
+    ```
 
 1.  出现提示时，按 **回车键** 三次，然后通过运行以下命令显示密钥： 
 
-```
-cat /root/.ssh/id_dsa.pub
-```
+    ```
+    cat /root/.ssh/id_dsa.pub
+    ```
 
 1.  将密钥值复制到剪贴板中。
 
-1.  在与 i20-db-0 的 SSH 会话中，通过运行以下命令在 vi 编辑器里打开 **/root/.ssh/authorized\_keys** 文件：
+1.  在与 i20-db-0 的 SSH 会话中，通过运行以下命令在 vi 编辑器里打开**/root/.ssh/authorized\_keys**文件：
 
-```
-vi /root/.ssh/authorized_keys
-```
+    ```
+    vi /root/.ssh/authorized_keys
+    ```
 
 1.  在编辑器窗口中，粘贴你在 i20-db-1 上生成的密钥。
 
@@ -368,23 +359,23 @@ vi /root/.ssh/authorized_keys
 
 1.  在 i20-db-0 的 SSH 会话中，通过运行以下命令生成无密码的 SSH 密钥：
 
-```
-ssh-keygen -t rsa
-```
+    ```
+    ssh-keygen -t rsa
+    ```
 
 1.  出现提示时，按 **回车键** 三次，然后通过运行以下命令显示密钥： 
 
-```
-cat /root/.ssh/id_rsa.pub
-```
+    ```
+    cat /root/.ssh/id_rsa.pub
+    ```
 
 1.  将密钥值复制到剪贴板中。
 
-1.  在与 i20-db-1 的 SSH 会话中，通过运行以下命令在 vi 编辑器里打开 **/root/.ssh/authorized\_keys** 文件：
+1.  在与 i20-db-1 的 SSH 会话中，通过运行以下命令在 vi 编辑器里打开**/root/.ssh/authorized\_keys**文件：
 
-```
-vi /root/.ssh/authorized_keys
-```
+    ```
+    vi /root/.ssh/authorized_keys
+    ```
 
 1.  在编辑器窗口中，从新行开始，粘贴你在 i20-db-0 上生成的密钥。
 
@@ -392,83 +383,83 @@ vi /root/.ssh/authorized_keys
 
 1.  在 i20-db-1 的 SSH 会话中，通过运行以下命令生成无密码的 SSH 密钥：
 
-```
-ssh-keygen -t rsa
-```
+    ```
+    ssh-keygen -t rsa
+    ```
 
 1.  出现提示时，按 **回车键** 三次，然后通过运行以下命令显示密钥： 
 
-```
-cat /root/.ssh/id_rsa.pub
-```
+    ```
+    cat /root/.ssh/id_rsa.pub
+    ```
 
 1.  将密钥值复制到剪贴板中。
 
-1.  在与 i20-db-0 的 SSH 会话中，通过运行以下命令在 vi 编辑器里打开 **/root/.ssh/authorized\_keys** 文件：
+1.  在与 i20-db-0 的 SSH 会话中，通过运行以下命令在 vi 编辑器里打开**/root/.ssh/authorized\_keys**文件：
 
-```
-vi /root/.ssh/authorized_keys
-```
+    ```
+    vi /root/.ssh/authorized_keys
+    ```
 
 1.  在编辑器窗口中，从新行开始，粘贴你在 i20-db-1 上生成的密钥。
 
 1.  保存更改并关闭编辑器。
 
-1.  要验证配置是否成功，请在 i20-db-0 的 SSH 会话中，通过运行以下命令建立从 i20-db-0 到 i20-db-1 的 SSH 会话，作为 **根**： 
+1.  要验证配置是否成功，请在与 i20-db-0 的 SSH 会话中，通过运行以下命令建立从 i20-db-0 到 i20-db-1 的 SSH 会话，作为 **“根”**： 
 
-```
-ssh root@i20-db-1
-```
+    ```
+    ssh root@i20-db-1
+    ```
 
-1.  当系统提示你是否确定要继续连接时，请键入"yes"并按 **输入**。 
+1.  当系统提示你是否确定要继续连接时，请键入`yes`并按**Enter**。 
 
 1.  确保未提示你输入密码。
 
 1.  通过运行以下命令，关闭从 i20-db-0 到 i20-db-1 的 SSH 会话： 
 
-```
-exit
-```
+    ```
+    exit
+    ```
 
-1.  在 i20-db-1 的 SSH 会话中，通过运行以下命令建立从 i20-db-0 到 i20-db-1 的 SSH 会话，作为**根**： 
+1.  在与 i20-db-1 的 SSH 会话中，通过运行以下命令建立从 i20-db-1 到 i20-db-0 的 SSH 会话，作为 **“根”**： 
 
-```
-ssh root@i20-db-0
-```
+    ```
+    ssh root@i20-db-0
+    ```
 
-1.  当系统提示你是否确定要继续连接时，请键入"yes"并按**输入**。 
+1.  当系统提示你是否确定要继续连接时，请键入`yes`并按**Enter**。 
 
 1.  确保未提示你输入密码。
 
 1.  通过运行以下命令，关闭从 i20-db-1 到 i20-db-0 的 SSH 会话： 
 
-```
-exit
-```
+    ```
+    exit
+    ```
 
 ### 任务 5：添加 YaST 包，更新 Linux 操作系统、安装 HA 扩展
 
 1.  在 i20-db-0 的 SSH 会话中，运行以下命令以启动 YaST：
 
-```
-yast
-```
+    ```
+    yast
+    ```
 
-1.  在 **YaST 控制中心**，选择 **软件 - \>附加产品** 并按 **输入**。将加载 **包管理器**。
+1.  在 **YaST 控制中心**，选择**软件 - \>附加产品**并按 **Enter**。将加载**包管理器**。
 
-1.  在**已安装的附加产品**屏幕上，验证是否已安装**公有云模块**。然后，按两次** F9** 返回到 shell 提示符。
+1.  在 **“已安装的附加产品”** 屏幕上，验证是否已安装 **“公有云模块”**。然后，按两次 **F9** 返回到 shell 提示符。
 
-1.  在与 i20-db-0 的 SSH 会话中，运行以下命令更新操作系统（出现提示时，键入 **y** 并按下 **输入**）：
+1.  在与 i20-db-0 的 SSH 会话中，运行以下命令更新操作系统（出现提示时，键入 **y** 并按下 **Enter**）：
 
-```
-zypper update
-```
+    ```
+    zypper update
+    ```
 
-1. 在与 i20-db-0 的 SSH 会话中，运行以下命令以更新 HA 扩展依赖项（出现提示时，键入 **y**,按下 **输入**，通读 **SUSE 最终用户许可协议**，键入 **q**，键入 **yes** 同意许可条款的条款，并再次按下 **输入**）。
+1. 在与 i20-db-0 的 SSH 会话中，运行以下命令以更新 HA 扩展依赖项（出现提示时，键入 **y**,按下 **Enter**，通读 **SUSE 最终用户许可协议**，键入 **q**，键入 **yes** 同意许可条款的条款，并再次按下 **Enter**）。
 
-```
-zypper install sle-ha-release fence-agents
-```
+    ```
+    zypper install sle-ha-release fence-agents
+    ```
 
 1. 在 i20-db-1 上重复上述步骤。
 
@@ -484,62 +475,62 @@ zypper install sle-ha-release fence-agents
 
 1.  在与 az12003a-vm0 的 RDP 会话中，在基于 PuTTY 的与 i20-db-0 的 SSH 会话中，运行以下命令以在 i20-db-0 上启动 HA 群集的配置：
 
-```
-ha-cluster-init
-```
+    ```
+    ha-cluster-init
+    ```
 
 1.  出现提示时，请提供以下回答：
 
-    -   你依然想继续吗 (y/n)？ **y**
+    -   是否仍要继续 (y/n)?： **y** 
 
-    -   /root/.ssh/id_rsa 已经存在 - 要覆盖吗 (y/n)？**n**
+    -   /root/.ssh/id_rsa 已经存在 - 是否覆盖 (y/n)?： **n**
 
-    -   ring0 的地址 [10.3.0.20]：**输入**
+    -   ring0 的地址 [10.3.0.20]： **ENTER**
 
-    -   ring0 的端口 [5405]：**输入**
+    -   ring0 的端口 [5405]： **ENTER**
 
-    -   你想使用 SBD 吗 (y/n)？**n**
+    -   你想使用 SBD 吗 (y/n)?： **n**
 
-    -   你是否希望配置虚拟 IP 地址 (y/n)？：**n**
+    -   是否希望配置虚拟 IP 地址 (y/n)?： **n**
 
-   > **注意**：群集设置生成一个 **hacluster** 帐户，密码设置为 **Linux**。你将在此任务后面部分更改它。
+   > **注意**：群集设置生成一个 **hacluster** 帐户，且其密码设置为  **linux**。你将在此任务后面部分更改它。
 
 1.  在与 az12003a-vm0 的 RDP 会话中，在与 i20-db-1 基于 PuTTY 的 SSH 会话中，运行以下命令从 i20-db-1 加入 i20-db-0 上的 HA 群集：
 
-```
-ha-cluster-join
-```
+    ```
+    ha-cluster-join
+    ```
 
 1.  出现提示时，请提供以下回答：
 
-    -   你想继续吗 (y/n)?**y**
+    -   你想继续吗 (y/n)? **y**
 
     -   现有节点的 IP 地址或主机名（例如：192.168.1.1) \[\]: **i20-db-0**
 
-    -   /root/.ssh/id\_rsa 已存在 - 要覆盖吗？ **否**
+    -   /root/.ssh/id\_rsa 已存在 - 覆盖（是/否n）？ **否**
 
-    -   /root/.ssh/id\_dsa 已存在 - 要覆盖吗？ **否**
+    -   /root/.ssh/id\_dsa 已存在 - 覆盖（是/否）？ **否**
 
-    -   ring0 的地址 [10.3.0.21]：**输入**
+    -   ring0 的地址 [10.3.0.21]： **ENTER**
 
-1.  在与 i20-db-0 基于 PuTTY 的 SSH 会话中，运行以下命令设置 **hacluster** 帐户密码为 **Pa55w.rd1234** （出现提示时键入新密码）： 
-```
-passwd hacluster
+1.  在与 i20-db-0 基于 PuTTY 的 SSH 会话中，运行以下命令设置 **hacluster** 帐户密码为 **Pa55w.rd1234**（出现提示时键入新密码）： 
+    ```
+    passwd hacluster
 
-```
+    ```
 
 1.  在 i20-db-1 上重复上述步骤。
 
 ### 任务 2：查看 corosync 配置
 
-1.  在到 az12003a-vm0 的 RDP 会话中和到 i20-db-0 的基于 PuTTY 的 SSH 会话中，通过运行以下命令查看 **/etc/corosync/corosync.conf** 文件的内容：
+1.  在与 az12003a-vm0 的 RDP 会话中，在与 i20-db-0 基于 PuTTY 的 SSH 会话中，通过运行以下命令查看 **/etc/corosync/corosync.conf** 文件的内容：
 
-```
-cat /etc/corosync/corosync.conf
-```
+    ```
+    cat /etc/corosync/corosync.conf
+    ```
 
 1.  记录 `transport: udpu` 条目和 `nodelist` 部分：
-```
+    ```
     [...]
        interface { 
            [...] 
@@ -548,17 +539,17 @@ cat /etc/corosync/corosync.conf
     } 
     nodelist {
        node {
-         ring0_addr:     10.3.0.20
+         ring0_addr：     10.3.0.20
          nodeid:     1
        }
        node {
-         ring0_addr:     10.3.0.21
+         ring0_addr：     10.3.0.21
          nodeid:     2
        } 
     }
     logging {
         [...]
-```
+    ```
 
 1.  在 i20-db-1 上重复上述步骤。
 
@@ -567,7 +558,7 @@ cat /etc/corosync/corosync.conf
 
 1.  在与 az12003a-vm0 的 RDP 会话中，在与 i20-db-0 基于 PuTTY 的 SSH 会话中，使用以下内容创建一个名为 **crm-defaults.txt** 的新文件：
 
-```
+    ```
     property $id="cib-bootstrap-options" \
       no-quorum-policy="ignore" \
       stonith-enabled="true" \
@@ -578,15 +569,15 @@ cat /etc/corosync/corosync.conf
       migration-threshold="5000"
     op_defaults $id="op-options" \
       timeout="600"
-```
+    ```
 
 1.  保存更改并关闭编辑器。
 
 1.  在基于 PuTTY 的 i20-db-0 SSH 会话中，通过运行以下命令在新建文件中应用设置：
 
-```
-crm configure load update crm-defaults.txt
-```
+    ```
+    crm configure load update crm-defaults.txt
+    ```
 
 ### 任务 4：确定 Azure 订阅 ID 和 Azure AD 租户 ID 的值
 
@@ -596,9 +587,9 @@ crm configure load update crm-defaults.txt
 
 1.  在 Cloud Shell 窗格中，运行以下命令以标识 Azure 订阅 ID 以及相应 Azure AD 租户的 ID：
 
-```
-az account show --query '{id:id, tenantId:tenantId}' --output json
-```
+    ```
+    az account show --query '{id:id, tenantId:tenantId}' --output json
+    ```
 
 1.  将结果值复制到记事本。需要在下一个任务中使用它。
 
@@ -607,13 +598,13 @@ az account show --query '{id:id, tenantId:tenantId}' --output json
 
 1.  在 Azure 门户中，导航到 Azure Active Directory 边栏选项卡。
 
-1.  从 Azure Active Directory 边栏选项卡，导航到 **应用注册** 边栏选项卡，然后单击 **新建注册**：
+1.  从 Azure Active Directory 边栏选项卡，导航到**应用注册**边栏选项卡，然后单击**新建注册**：
 
-1.  在 **注册应用程序** 边栏选项卡，指定以下设置并单击 **注册**：
+1.  在**注册应用程序**边栏选项卡，指定以下设置并单击**注册**：
 
     -   名称：**Stonith app**
 
-    -   支持的帐户类型：**仅限组织目录中的帐户**
+    -   支持的帐户类型：**仅限该组织目录中的帐户**
 
 1.  在 **Stonith app** 边栏选项卡，复制 **应用程序（客户端）ID** 的值到记事本。之后在本练习中称为 **login_id** ：
 
@@ -621,20 +612,20 @@ az account show --query '{id:id, tenantId:tenantId}' --output json
 
 1.  在 **Stonith app - 证书和密钥** 边栏选项卡，单击 **新建客户端密钥**。
 
-1.  在 **添加客户端密码** 窗格，在 **描述** 文本框中键入 **STONITH app 密钥**，在 **到期** 部分，保留默认值 **1 年内**，然后单击 **添加**。
+1.  在**添加客户端密码**窗格，在**描述**文本框中键入 **STONITH app 密钥**，在**到期**部分，保留默认值 **1 年内**，然后单击**添加**。
 
-1.  将生成的密码值复制到 Notepad（此条目只在你单击 **添加** 后显示一次）。本练习下文将其称为 **密码**：
+1.  将生成的密码值复制到 Notepad（此条目只在你单击**添加**后显示一次）。本练习下文将其称为**密码**：
 
 
 ### 任务 6：将 Azure VM 的权限授予 STONITH 应用的服务主体 
 
-1.  在 Azure 门户中，导航到 **i20-db-0** Azure VM 的边栏选项卡。
+1.  在 Azure 门户中，导航到 **i20-db-0**Azure VM 的边栏选项卡。
 
-1.  从 **i20-db-0** 边栏选项卡进入，显示 **i20-db-0 - 访问控制 (IAM)** 边栏选项卡。
+1.  从 **i20-db-0** 边栏选项卡进入，显示 **i20-db-0 - 访问控制 (IAM)**边栏选项卡。
 
-1.  在 **i20-db-0 - 访问控制 (IAM)** 边栏选项卡中，添加具有以下设置的角色分配：
+1.  在 **i20-db-0 - 访问控制 (IAM)**边栏选项卡中，添加具有以下设置的角色分配：
 
-    -   角色 **所有者**
+    -   角色：**所有者**
 
     -   分配访问权限给：**Azure AD 用户、组或服务主体**
 
@@ -645,26 +636,26 @@ az account show --query '{id:id, tenantId:tenantId}' --output json
 
 ### 任务 7：配置 STONITH 群集设备 
 
-1.  在与 az12003a-vm0 的 RDP 会话中，在与 i20-db-0 基于 PuTTY 的 SSH 会话中，创建一个名为 **crm-fencing.txt** 的新文件，具有以下内容（其中"subscription_id"、"tenant_id"、"login_id"和"password"是你在练习 3 任务 5 中确定的值的占位符：
+1.  在与 az12003a-vm0 的 RDP 会话中，在与 i20-db-0 基于 PuTTY 的 SSH 会话中，创建一个名为 **crm-fencing.txt** 的新文件，文件包括以下内容（其中 `subscription_id`、`tenant_id`、`login_id` 和 `password` 是你在练习 3 任务 5 中确定的值的占位符：
 
-```
+    ```
     primitive rsc_st_azure_1 stonith:fence_azure_arm \
          params subscriptionId="subscription_id" resourceGroup="az12003a-sap-RG" tenantId="tenant_id" login="login_id" passwd="password"
     primitive rsc_st_azure_2 stonith:fence_azure_arm \
          params subscriptionId="subscription_id" resourceGroup="az12003a-sap-RG" tenantId="tenant_id" login="login_id" passwd="password"
     colocation col_st_azure -2000: rsc_st_azure_1:Started rsc_st_azure_2:Started
-```
+    ```
 
 1.  在 s03-db-0 的 SSH 会话中，通过运行 **crm configure load update crm-fencing.txt** 应用文件中的设置：
-```
-crm configure load update crm-fencing.txt
-```
+    ```
+    crm configure load update crm-fencing.txt
+    ```
 
 ### 任务 8：使用 Hawk 查看在运行 Linux 的 Azure VM 上的群集配置
 
 1.  在与 az12003a-vm0 的 RDP 会话中，启动 Internet Explorer 并导航到：**https://i20-db-0:7630**。这将显示 SUSE Hawk 的登录页面。
 
-   > **注意**：忽略**此网站不安全**消息。
+   > **注意**：忽略 **“此站点不安全”** 的消息。
 
 1.  在 SUSE Hawk 登录页面上，使用以下凭据登录：
 
@@ -685,25 +676,25 @@ crm configure load update crm-fencing.txt
 
 #### 任务 1：打开 Cloud Shell
 
-1. 在门户顶部，单击 **Cloud Shell** 图标以打开“Cloud Shell”窗格，然后选择“Bash”作为 Shell。
+1. 在门户顶部，单击 **“Cloud Shell”** 图标以打开 Cloud Shell 窗格，然后选择“Bash”作为 Shell。
 
-1. 在门户底部的 **Cloud Shell** 命令提示符下，键入以下命令，然后按 **输入**列出你在此练习中创建的所有资源组：
+1. 在门户网站底部的 **Cloud Shell** 命令提示符下，键入以下命令并按** Enter 键**列出你在本实验中创建的所有资源组：
 
-```
-az group list --query "[?starts_with(name,'az12003a-')]".name --output tsv
-```
+    ```
+    az group list --query "[?starts_with(name,'az12003a-')]".name --output tsv
+    ```
 
-1. 验证输出中仅包含你在本实验中创建的资源组。这些组将在下一个任务中删除。
+1. 验证输出结果中是否仅包含你在本实验室中创建的资源组。这些组将在下一个任务中删除。
 
 #### 任务 2：删除资源组
 
-1. 在 **Cloud Shell** 命令提示符处，键入以下命令，然后按 **输入** 删除你在此实验中创建的资源组。
+1. 在 **Cloud Shell** 命令提示符处，键入以下命令并按 **Enter** 以删除你在本实验中创建的资源组
 
-```
-az group list --query "[?starts_with(name,'az12003a-')]".name --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
-```
+    ```
+    az group list --query "[?starts_with(name,'az12003a-')]".name --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
+    ```
 
-1. 关闭门户底部的 **Cloud Shell** 提示符。
+1. 关闭门户底部的 **Cloud Shell** 提示。
 
 
 > **结果**：完成本练习后，你已经删除了本实验中使用的资源。

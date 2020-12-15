@@ -1,11 +1,5 @@
-﻿---
-lab:
-    title: '3b：在 Azure VM 上实施 Windows 群集'
-    module: '模块 3：Azure 上的 SAP 认证产品'
----
-
-# AZ 120 模块 3：Azure 上的 SAP 认证产品
-# 实验室 3b：在 Azure VM 上实施 Windows 群集
+﻿# AZ 120 模块 1：Azure 上的 SAP 认证产品
+# 实验室 1b：在 Azure VM 上实施 Windows 群集
 
 预计用时：120 分钟
 
@@ -67,7 +61,7 @@ lab:
 1.  在 **编辑模板** 边栏选项卡上，将 **adVMSize** 变量的值设置为 **Standard_D4S_v3**，然后单击 **保存**。
 
 ```
-"adVMSize": "Standard_D4S_v3"
+"adVMSize": "Standard_D4s_v3"
 
 ```
 
@@ -91,7 +85,7 @@ lab:
 
     -   Bdc RDP 端口：**13389**
 
-    -   _artifacts 位置：**https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/active-directory-new-domain-ha-2-dc**
+    -   _artifacts 位置：**https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/active-directory-new-domain-ha-2-dc/**
 
     -   _artifacts 位置 Sas 令牌：*留空*
 
@@ -820,7 +814,7 @@ New-AzLoadBalancer -ResourceGroupName $resourceGroupName -Location $location -Na
 
 1.  通过 RDP 连接到新预配的 Azure VM。 
 
-1.  在 az12001b-vm2 的 RDP 会话中，确保你可以通过其专用 IP 地址（分别为 10.0.1.4 和 10.0.1.5）与 az12001b-cl-vm0 和 az12001b-cl-vm1 建立 SSH 会话。 
+1.  在 az12001b-vm2 的 RDP 会话中，确保你可以通过其专用 IP 地址（分别为 10.0.1.4 和 10.0.1.5）与 az12001b-cl-vm0 和 az12001b-cl-vm1 建立 RDP 会话。 
 
 > **结果**：完成本练习后，你已配置了支持高可用性 SAP NetWeaver 部署所需的 Azure 网络资源
 
