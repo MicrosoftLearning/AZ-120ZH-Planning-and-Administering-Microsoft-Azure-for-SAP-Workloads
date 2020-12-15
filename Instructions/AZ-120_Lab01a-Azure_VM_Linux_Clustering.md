@@ -393,7 +393,7 @@
    blkid
    ```
 
-   > **注意**：确定 **UUID** 与新创建的卷组和分区关联的值，包括 **/dev/sdi** （用于 **/hana/shared**）和 **/dev/sdj** （用于**/usr/sap**）。
+   > **注意**：确定 **UUID** 与新创建的卷组和分区关联的值，包括 **/dev/sdi** （用于 **/hana/shared**）和 **/dev/sdj** （用于 **/usr/sap**）。
 
 
 1. 在 Cloud Shell 窗格，在与 az12001a-vm0 的 SSH 会话中，通过运行以下命令打开 vi 编辑器（可自由使用任何其他编辑器） 中的 **/etc/fstab**：
