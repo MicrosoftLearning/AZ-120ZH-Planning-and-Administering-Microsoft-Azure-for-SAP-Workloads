@@ -54,14 +54,14 @@
 1.  在 **编辑模板** 边栏选项卡上，找到将值分配给 **adVMSize** 变量的行：
 
 ```
-"adVMSize": "Standard_DS2_v2"
+    "adVMSize": "Standard_DS2_v2"
 
 ```
 
 1.  在 **编辑模板** 边栏选项卡上，将 **adVMSize** 变量的值设置为 **Standard_D4S_v3**，然后单击 **保存**。
 
 ```
-"adVMSize": "Standard_D4s_v3"
+    "adVMSize": "Standard_D4s_v3"
 
 ```
 
@@ -242,19 +242,19 @@
 1.  在 Cloud Shell 窗格中，运行以下命令，以创建第一组共计 4 个托管磁盘，这些磁盘将附加到你在上一个任务中部署的第一个 Azure VM：
 
 ```
-$resourceGroupName = 'az12001b-cl-RG'
+    $resourceGroupName = 'az12001b-cl-RG'
 
-$location = (Get-AzResourceGroup -Name $resourceGroupName).Location
+    $location = (Get-AzResourceGroup -Name $resourceGroupName).Location
 
-$diskConfig = New-AzDiskConfig -Location $location -DiskSizeGB 128 -AccountType Premium_LRS -OsType Windows -CreateOption Empty
+    $diskConfig = New-AzDiskConfig -Location $location -DiskSizeGB 128 -AccountType Premium_LRS -OsType Windows -CreateOption Empty
 
-for ($i=0;$i -lt 4;$i++) {New-AzDisk -ResourceGroupName $resourceGroupName -DiskName az12001b-cl-vm0-DataDisk$i -Disk $diskConfig}
+    for ($i=0;$i -lt 4;$i++) {New-AzDisk -ResourceGroupName $resourceGroupName -DiskName az12001b-cl-vm0-DataDisk$i -Disk $diskConfig}
 ```
 
 1.  在 Cloud Shell 窗格中，运行以下命令，以创建第二组共计 4 个托管磁盘，这些磁盘将附加到你在上一个任务中部署的第二个 Azure VM：
 
 ```
-for ($i=0;$i -lt 4;$i++) {New-AzDisk -ResourceGroupName $resourceGroupName -DiskName az12001b-cl-vm1-DataDisk$i -Disk $diskConfig}
+    for ($i=0;$i -lt 4;$i++) {New-AzDisk -ResourceGroupName $resourceGroupName -DiskName az12001b-cl-vm1-DataDisk$i -Disk $diskConfig}
 ```
 
 1.  从 Azure 门户导航到你在上一个任务 (**az12001b-cl-vm0**) 中预配的第一个 Azure VM。
@@ -313,17 +313,17 @@ for ($i=0;$i -lt 4;$i++) {New-AzDisk -ResourceGroupName $resourceGroupName -Disk
 1.  在 Cloud Shell 窗格中，运行以下命令，将你在上一个练习的第二个任务中部署的 Windows Server 2019 Azure VM 加入到 **adatum.com** Active Directory域：
 
 ```
-$resourceGroupName = 'az12001b-cl-RG'
+    $resourceGroupName = 'az12001b-cl-RG'
 
-$location = (Get-AzureRmResourceGroup -Name $resourceGroupName).Location
+    $location = (Get-AzureRmResourceGroup -Name $resourceGroupName).Location
 
-$settingString = '{"Name": "adatum.com", "User": "adatum.com\\Student", "Restart": "true", "Options": "3"}'
+    $settingString = '{"Name": "adatum.com", "User": "adatum.com\\Student", "Restart": "true", "Options": "3"}'
 
-$protectedSettingString = '{"Password": "Pa55w.rd1234"}'
+    $protectedSettingString = '{"Password": "Pa55w.rd1234"}'
 
-$vmNames = @('az12001b-cl-vm0','az12001b-cl-vm1')
+    $vmNames = @('az12001b-cl-vm0','az12001b-cl-vm1')
 
-foreach ($vmName in $vmNames) { Set-AzVMExtension -ResourceGroupName $resourceGroupName -ExtensionType 'JsonADDomainExtension' -Name 'joindomain' -Publisher "Microsoft.Compute" -TypeHandlerVersion "1.0" -Vmname $vmName -Location $location -SettingString $settingString -ProtectedSettingString $protectedSettingString }
+    foreach ($vmName in $vmNames) { Set-AzVMExtension -ResourceGroupName $resourceGroupName -ExtensionType 'JsonADDomainExtension' -Name 'joindomain' -Publisher "Microsoft.Compute" -TypeHandlerVersion "1.0" -Vmname $vmName -Location $location -SettingString $settingString -ProtectedSettingString $protectedSettingString }
 ```
 
 1.  请等待脚本完成，再继续执行下一个任务。
@@ -414,14 +414,14 @@ foreach ($vmName in $vmNames) { Set-AzVMExtension -ResourceGroupName $resourceGr
 1.  在与 az12001b-cl-vm0 的 RDP 会话中，通过运行以下命令启动 Windows PowerShell ISE 会话并在 az12001b-cl-vm0 和 az12001b-cl-vm1 上均安装故障转移群集和远程管理工具功能：
 
 ```
-$nodes = @('az12001b-cl-vm1', 'az12001b-cl-vm0')
+    $nodes = @('az12001b-cl-vm1', 'az12001b-cl-vm0')
 
-Invoke-Command $nodes {Install-WindowsFeature Failover-Clustering -IncludeAllSubFeature -IncludeManagementTools} 
+    Invoke-Command $nodes {Install-WindowsFeature Failover-Clustering -IncludeAllSubFeature -IncludeManagementTools} 
 
-Invoke-Command $nodes {Install-WindowsFeature RSAT -IncludeAllSubFeature -Restart} 
+    Invoke-Command $nodes {Install-WindowsFeature RSAT -IncludeAllSubFeature -Restart} 
 ```
 
-    > **注意**：这将重启两个 Azure VM 的来宾操作系统。
+> **注意**：这将重启两个 Azure VM 的来宾操作系统。
 
 1.  在实验室计算机的 Azure 门户上单击 **新建资源**。
 
@@ -470,9 +470,9 @@ Invoke-Command $nodes {Install-WindowsFeature RSAT -IncludeAllSubFeature -Restar
 1.  在在与 az12001b-cl-vm0 的 RDP 会话中，通过运行以下命令启动 Windows PowerShell ISE 会话并创建新群集：
 
 ```
-$nodes = @('az12001b-cl-vm0','az12001b-cl-vm1')
+    $nodes = @('az12001b-cl-vm0','az12001b-cl-vm1')
 
-New-Cluster -Name az12001b-cl-cl0 -Node $nodes -NoStorage -StaticAddress 10.0.1.6
+    New-Cluster -Name az12001b-cl-cl0 -Node $nodes -NoStorage -StaticAddress 10.0.1.6
 ```
 
 1.  在与 az12001b-cl-vm0 的 RDP 会话中，切换到 **Active Directory 管理中心** 控制台。
@@ -496,29 +496,29 @@ New-Cluster -Name az12001b-cl-cl0 -Node $nodes -NoStorage -StaticAddress 10.0.1.
 1.  在 Windows PowerShell ISE 会话中，通过运行以下命令安装 Azure PowerShell 模块：
 
 ```
-Install-PackageProvider -Name NuGet -Force
+    Install-PackageProvider -Name NuGet -Force
 
-Install-Module -Name Az -Force
+    Install-Module -Name Az -Force
 ```
 
 1.  在 Windows PowerShell ISE 会话中，通过运行以下命令使用 Azure AD 凭据进行身份验证：
 
 ```
-Add-AzAccount
+    Add-AzAccount
 ```
 
-    > **注意**：出现提示时，使用你在本实验室中使用的 Azure 订阅的所有者或参与者角色登录工作或学校或个人 Microsoft 帐户。
+> **注意**：出现提示时，使用你在本实验室中使用的 Azure 订阅的所有者或参与者角色登录工作或学校或个人 Microsoft 帐户。
 
 1.  在 Windows PowerShell ISE 会话中，通过运行以下命令设置新群集的云见证仲裁：
 
 ```
-$resourceGroupName = 'az12001b-cl-RG'
+    $resourceGroupName = 'az12001b-cl-RG'
 
-$cwStorageAccountName = (Get-AzStorageAccount -ResourceGroupName $resourceGroupName)[0].StorageAccountName
+    $cwStorageAccountName = (Get-AzStorageAccount -ResourceGroupName $resourceGroupName)[0].StorageAccountName
 
-$cwStorageAccountKey = (Get-AzStorageAccountKey -ResourceGroupName $resourceGroupName -Name $cwStorageAccountName).Value[0]
+    $cwStorageAccountKey = (Get-AzStorageAccountKey -ResourceGroupName $resourceGroupName -Name $cwStorageAccountName).Value[0]
 
-Set-ClusterQuorum -CloudWitness -AccountName $cwStorageAccountName -AccessKey $cwStorageAccountKey
+    Set-ClusterQuorum -CloudWitness -AccountName $cwStorageAccountName -AccessKey $cwStorageAccountKey
 ```
 
 1.  如果要在 az12001b-cl-vm0 的 RDP 会话中验证生成的配置，需在服务器管理器的 **工具** 菜单中，启动 **故障转移群集管理器**。
@@ -574,7 +574,7 @@ Set-ClusterQuorum -CloudWitness -AccountName $cwStorageAccountName -AccessKey $c
 
 ### 任务 2：创建和配置处理入站流量的 Azure 负载均衡器
 
-1.  在 Azure 门户上，单击**+新建资源**。
+1.  在 Azure 门户上，单击 **+新建资源**。
 
 1.  从 **新建** 边栏选项卡中，使用以下设置创建新的 Azure 负载均衡器：
 
@@ -657,31 +657,31 @@ Set-ClusterQuorum -CloudWitness -AccountName $cwStorageAccountName -AccessKey $c
 1.  在 Cloud Shell 窗格中，运行以下命令，创建第二个负载均衡器将使用的公共 IP 地址：
 
 ```
-$resourceGroupName = 'az12001b-cl-RG'
+    $resourceGroupName = 'az12001b-cl-RG'
 
-$location = (Get-AzResourceGroup -Name $resourceGroupName).Location
+    $location = (Get-AzResourceGroup -Name $resourceGroupName).Location
 
-$pipName = 'az12001b-cl-lb0-pip'
+    $pipName = 'az12001b-cl-lb0-pip'
 
-az network public-ip create --resource-group $resourceGroupName --name $pipName --sku Standard --location $location
+    az network public-ip create --resource-group $resourceGroupName --name $pipName --sku Standard --location $location
 ```
 
 1.  在 Cloud Shell 窗格中，运行以下命令以创建第二个负载均衡器：
 
 ```
-$lbName = 'az12001b-cl-lb1'
+    $lbName = 'az12001b-cl-lb1'
 
-$lbFeName = 'az12001b-cl-lb1-fe'
+    $lbFeName = 'az12001b-cl-lb1-fe'
 
-$lbBePoolName = 'az12001b-cl-lb1-bepool'
+    $lbBePoolName = 'az12001b-cl-lb1-bepool'
    
-$pip = Get-AzPublicIpAddress -ResourceGroupName $resourceGroupName -Name $pipName
+    $pip = Get-AzPublicIpAddress -ResourceGroupName $resourceGroupName -Name $pipName
 
-$feIpconfiguration = New-AzLoadBalancerFrontendIpConfig -Name $lbFeName -PublicIpAddress $pip
+    $feIpconfiguration = New-AzLoadBalancerFrontendIpConfig -Name $lbFeName -PublicIpAddress $pip
 
-$bePoolConfiguration = New-AzLoadBalancerBackendAddressPoolConfig -Name $lbBePoolName
+    $bePoolConfiguration = New-AzLoadBalancerBackendAddressPoolConfig -Name $lbBePoolName
 
-New-AzLoadBalancer -ResourceGroupName $resourceGroupName -Location $location -Name $lbName -Sku Standard -BackendAddressPool $bePoolConfiguration -FrontendIpConfiguration $feIpconfiguration
+    New-AzLoadBalancer -ResourceGroupName $resourceGroupName -Location $location -Name $lbName -Sku Standard -BackendAddressPool $bePoolConfiguration -FrontendIpConfiguration $feIpconfiguration
 ```
 
 1.  关闭 Cloud Shell 窗格。
@@ -831,7 +831,7 @@ New-AzLoadBalancer -ResourceGroupName $resourceGroupName -Location $location -Na
 1. 在门户底部的 **Cloud Shell** 命令提示符下，键入以下命令，然后按 **输入**列出你在此练习中创建的所有资源组：
 
 ```
-Get-AzResourceGroup | Where-Object {$_.ResourceGroupName -like 'az12001b-*'} | Select-Object ResourceGroupName
+    Get-AzResourceGroup | Where-Object {$_.ResourceGroupName -like 'az12001b-*'} | Select-Object ResourceGroupName
 ```
 
 1. 验证输出中仅包含你在本实验中创建的资源组。这些组将在下一个任务中删除。
@@ -841,7 +841,7 @@ Get-AzResourceGroup | Where-Object {$_.ResourceGroupName -like 'az12001b-*'} | S
 1. 在 **Cloud Shell** 命令提示符处，键入以下命令，然后按 **输入** 删除你在此实验中创建的资源组。
 
 ```
-Get-AzResourceGroup | Where-Object {$_.ResourceGroupName -like 'az12001b-*'} | Remove-AzResourceGroup -Force  
+    Get-AzResourceGroup | Where-Object {$_.ResourceGroupName -like 'az12001b-*'} | Remove-AzResourceGroup -Force  
 ```
 
 1. 关闭门户底部的 **Cloud Shell** 提示符。

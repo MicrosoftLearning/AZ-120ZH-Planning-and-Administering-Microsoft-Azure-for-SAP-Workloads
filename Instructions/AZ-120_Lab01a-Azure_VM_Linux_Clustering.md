@@ -393,10 +393,10 @@
    blkid
    ```
 
-   > **注意**：确定 **UUID** 与新创建的卷组和分区关联的值，包括**/dev/sdi**（用于**/hana/shared**）和**/dev/sdj**（用于**/usr/sap**）。
+   > **注意**：确定 **UUID** 与新创建的卷组和分区关联的值，包括 **/dev/sdi** （用于 **/hana/shared**）和 **/dev/sdj** （用于**/usr/sap**）。
 
 
-1. 在 Cloud Shell 窗格，在与 az12001a-vm0 的 SSH 会话中，通过运行以下命令打开 vi 编辑器（可自由使用任何其他编辑器） 中的**/etc/fstab**：
+1. 在 Cloud Shell 窗格，在与 az12001a-vm0 的 SSH 会话中，通过运行以下命令打开 vi 编辑器（可自由使用任何其他编辑器） 中的 **/etc/fstab**：
 
    ```cli
    vi /etc/fstab
@@ -799,7 +799,7 @@
 
    - Azure Spot 实例：**否**
 
-   - 用户名称：**学生**
+   - 用户名称：**Student**
 
    - 密码：**Pa55w.rd1234**
 
@@ -876,7 +876,7 @@
 
 1. 在门户顶部，单击 **“Cloud Shell”** 图标以打开 Cloud Shell 窗格，然后选择“Bash”作为 Shell。
 
-1. 在门户网站底部的 **Cloud Shell** 命令提示符下，键入以下命令并按** Enter 键**列出你在本实验中创建的所有资源组：
+1. 在门户网站底部的 **Cloud Shell** 命令提示符下，键入以下命令并按 **Enter 键**列出你在本实验中创建的所有资源组：
 
    ```cli
    az group list --query "[?starts_with(name,'az12001a-')]".name --output tsv

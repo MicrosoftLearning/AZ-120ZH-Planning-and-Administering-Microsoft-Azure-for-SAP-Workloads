@@ -10,7 +10,7 @@
 
     -   2 x Standard_E4s_v3（每个 4 个 vCPU）= 8
 
-    > **注意**：要确定支持可用性区域的 Azure 区域，请参阅 [https://docs.microsoft.com/zh-cn/azure/availability-zones/az-overview]<https://docs.microsoft.com/zh-cn/azure/availability-zones/az-overview>
+    > **注意**：要确定支持可用性区域的 Azure 区域，请参阅 [https://docs.microsoft.com/zh-cn/azure/availability-zones/az-overview](https://docs.microsoft.com/zh-cn/azure/availability-zones/az-overview)
 
 虽然本课程前三个实验室的 vCPU 要求较低，但我们建议你请求增加配额以满足所有实验室的要求，因为增加配额可能需要一些时间（即使配额增加请求通常是在请求当天的工作日完成）。
 

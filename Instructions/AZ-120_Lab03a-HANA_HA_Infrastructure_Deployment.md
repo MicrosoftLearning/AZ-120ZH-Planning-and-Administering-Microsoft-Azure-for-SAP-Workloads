@@ -88,9 +88,9 @@
 
     > **注意**：确保使用 Microsoft Edge 或第三方浏览器。请勿使用 Internet Explorer。
 
-1.  在标题为**使用市场映像的 SAP NetWeaver 3 层兼容模板 - MD**的页面上，单击**部署到 Azure**。这将自动将你的浏览器重定向到 Azure 门户并显示 **SAP NetWeaver 3 层（托管磁盘）**边栏选项卡。
+1.  在标题为**使用市场映像的 SAP NetWeaver 3 层兼容模板 - MD**的页面上，单击**部署到 Azure**。这将自动将你的浏览器重定向到 Azure 门户并显示 **SAP NetWeaver 3 层（托管磁盘）** 边栏选项卡。
 
-1.  在 **SAP NetWeaver 3 层（托管磁盘）**边栏选项卡，使用以下设置启动部署：
+1.  在 **SAP NetWeaver 3 层（托管磁盘）** 边栏选项卡，使用以下设置启动部署：
 
     -   订阅：*你的 Azure 订阅名*
 
@@ -159,7 +159,7 @@
 
     -   大小：**标准 D2s v3**
 
-    -   用户名称：**学生**
+    -   用户名称：**Student**
 
     -   密码：**Pa55w.rd1234**
 
@@ -253,7 +253,7 @@
 
 1.  使用 PuTTY 通过 SSH 连接 **i20-db-0** Azure VM。确认安全警报，并在出现提示时提供以下凭据：
 
-    -   登录身份： **学生**
+    -   登录身份： **student**
 
     -   密码：**Pa55w.rd1234**
 
@@ -287,7 +287,7 @@
     vi /etc/ssh/sshd_config
     ```
 
-1.  在**/etc/ssh/sshd\_config**文件里，找到 **PermitRootLogin** 和 **AuthorizedKeysFile** 条目，并按如下方式配置它们：
+1.  在 **/etc/ssh/sshd\_config** 文件里，找到 **PermitRootLogin** 和 **AuthorizedKeysFile** 条目，并按如下方式配置它们：
     ```
     PermitRootLogin yes
     AuthorizedKeysFile      /root/.ssh/authorized_keys
@@ -317,13 +317,13 @@
 
 1.  将密钥值复制到剪贴板中。
 
-1.  在与 i20-db-1 的 SSH 会话中，通过运行以下命令创建**/root/.ssh/**目录：
+1.  在与 i20-db-1 的 SSH 会话中，通过运行以下命令创建 **/root/.ssh/** 目录：
 
     ```
     mkdir /root/.ssh
     ```
 
-1.  在与 i20-db-1 的 SSH 会话中，通过运行以下命令在 vi 编辑器里打开**/root/.ssh/authorized\_keys**文件：
+1.  在与 i20-db-1 的 SSH 会话中，通过运行以下命令在 vi 编辑器里打开 **/root/.ssh/authorized\_keys** 文件：
 
     ```
     vi /root/.ssh/authorized_keys
@@ -347,7 +347,7 @@
 
 1.  将密钥值复制到剪贴板中。
 
-1.  在与 i20-db-0 的 SSH 会话中，通过运行以下命令在 vi 编辑器里打开**/root/.ssh/authorized\_keys**文件：
+1.  在与 i20-db-0 的 SSH 会话中，通过运行以下命令在 vi 编辑器里打开 **/root/.ssh/authorized\_keys** 文件：
 
     ```
     vi /root/.ssh/authorized_keys
@@ -371,7 +371,7 @@
 
 1.  将密钥值复制到剪贴板中。
 
-1.  在与 i20-db-1 的 SSH 会话中，通过运行以下命令在 vi 编辑器里打开**/root/.ssh/authorized\_keys**文件：
+1.  在与 i20-db-1 的 SSH 会话中，通过运行以下命令在 vi 编辑器里打开 **/root/.ssh/authorized\_keys** 文件：
 
     ```
     vi /root/.ssh/authorized_keys
@@ -395,7 +395,7 @@
 
 1.  将密钥值复制到剪贴板中。
 
-1.  在与 i20-db-0 的 SSH 会话中，通过运行以下命令在 vi 编辑器里打开**/root/.ssh/authorized\_keys**文件：
+1.  在与 i20-db-0 的 SSH 会话中，通过运行以下命令在 vi 编辑器里打开 **/root/.ssh/authorized\_keys** 文件：
 
     ```
     vi /root/.ssh/authorized_keys
@@ -539,11 +539,11 @@
     } 
     nodelist {
        node {
-         ring0_addr：     10.3.0.20
+         ring0_addr:     10.3.0.20
          nodeid:     1
        }
        node {
-         ring0_addr：     10.3.0.21
+         ring0_addr:     10.3.0.21
          nodeid:     2
        } 
     }
@@ -581,7 +581,7 @@
 
 ### 任务 4：确定 Azure 订阅 ID 和 Azure AD 租户 ID 的值
 
-1.  从实验室计算机的浏览器窗口中，进入 Azure 门户网站：**https://portal.azure.com**，确保你使用与订阅关联的 Azure AD 租户中具有全局管理员角色的用户帐户登录。
+1.  从实验室计算机的浏览器窗口中，进入 Azure 门户网站： **https://portal.azure.com**，确保你使用与订阅关联的 Azure AD 租户中具有全局管理员角色的用户帐户登录。
 
 1.  从 Azure 门户，在 Cloud Shell 启动 Bash 会话。 
 
@@ -621,9 +621,9 @@
 
 1.  在 Azure 门户中，导航到 **i20-db-0**Azure VM 的边栏选项卡。
 
-1.  从 **i20-db-0** 边栏选项卡进入，显示 **i20-db-0 - 访问控制 (IAM)**边栏选项卡。
+1.  从 **i20-db-0** 边栏选项卡进入，显示 **i20-db-0 - 访问控制 (IAM)** 边栏选项卡。
 
-1.  在 **i20-db-0 - 访问控制 (IAM)**边栏选项卡中，添加具有以下设置的角色分配：
+1.  在 **i20-db-0 - 访问控制 (IAM)** 边栏选项卡中，添加具有以下设置的角色分配：
 
     -   角色：**所有者**
 
@@ -653,7 +653,7 @@
 
 ### 任务 8：使用 Hawk 查看在运行 Linux 的 Azure VM 上的群集配置
 
-1.  在与 az12003a-vm0 的 RDP 会话中，启动 Internet Explorer 并导航到：**https://i20-db-0:7630**。这将显示 SUSE Hawk 的登录页面。
+1.  在与 az12003a-vm0 的 RDP 会话中，启动 Internet Explorer 并导航到： **https://i20-db-0:7630**。这将显示 SUSE Hawk 的登录页面。
 
    > **注意**：忽略 **“此站点不安全”** 的消息。
 
@@ -678,7 +678,7 @@
 
 1. 在门户顶部，单击 **“Cloud Shell”** 图标以打开 Cloud Shell 窗格，然后选择“Bash”作为 Shell。
 
-1. 在门户网站底部的 **Cloud Shell** 命令提示符下，键入以下命令并按** Enter 键**列出你在本实验中创建的所有资源组：
+1. 在门户网站底部的 **Cloud Shell** 命令提示符下，键入以下命令并按**Enter 键**列出你在本实验中创建的所有资源组：
 
     ```
     az group list --query "[?starts_with(name,'az12003a-')]".name --output tsv
