@@ -28,12 +28,12 @@
 
 1.  在 Azure 门户的 **Cloud Shell** 中，在 PowerShell 提示符处运行以下命令：其中 `<Azure_region>` 指定你打算用于本实验室的目标 Azure 区域（例如`westus2`）：
 
-```
-Get-AzVMUsage -Location westus2 | Where-Object {$_.Name.Value -eq 'StandardDSv3Family'}
+    ```
+    Get-AzVMUsage -Location westus2 | Where-Object {$_.Name.Value -eq 'StandardDSv3Family'}
 
-Get-AzVMUsage -Location westus2 | Where-Object {$_.Name.Value -eq 'StandardESv3Family'}
+    Get-AzVMUsage -Location westus2 | Where-Object {$_.Name.Value -eq 'StandardESv3Family'}
 
-``` 
+    ``` 
 
     > **注意**：要标识 Azure 区域名，请在 **Cloud Shell** 中 Bash 提示符处，运行 `(Get-AzLocation).Location`
    
