@@ -1,11 +1,11 @@
 ﻿# AZ 120 模块 3：实施 Azure 上的 SAP
-# 实验室 3b：在运行 Windows 的 Azure VM 上实施 SAP 架构
+# 实验室 3b：在运行 Windows 的 Azure VM 上实施 SAP 体系结构
 
 预计用时：150 分钟
 
 本实验室中的所有任务都是从 Azure 门户执行的（包括 PowerShell Cloud Shell 会话）  
 
-   > **注意**：如果不使用 Cloud Shell，则必须在实验室虚拟机上安装 Az PowerShell 模块，相关内容请访问：[**https://docs.microsoft.com/zh-cn/powershell/azure/install-az-ps-msi?view=azps-2.8.0**](https://docs.microsoft.com/zh-cn/powershell/azure/install-az-ps-msi?view=azps-2.8.0)。
+   > **注意**： 如果不使用 Cloud Shell，则必须在实验室虚拟机上安装 Az PowerShell 模块，相关内容请访问：[**https://docs.microsoft.com/zh-cn/powershell/azure/install-az-ps-msi?view=azps-2.8.0**](https://docs.microsoft.com/zh-cn/powershell/azure/install-az-ps-msi?view=azps-2.8.0)。
 
 实验室文件：无
 
@@ -25,9 +25,9 @@
 
 ## 要求
 
--   Microsoft Azure 订阅
+-   在支持可用性区域的 Azure 区域中，具有数量充足的可用 DSv2 和 Dsv3 vCPU（四个 Standard_DS1_v2 VM，每个 VM 1 个 vCPU；六个 Standard_D4s_v3 VM，每个 VM 4 个 vCPU）的 Microsoft Azure 订阅
 
--   运行 Windows 10、Windows Server 2016 或 Windows Server 2016 的实验室计算机可以访问 Azure
+-   安装了兼容 Azure Cloud Shell 的 Web 浏览器且具有 Azure 访问权限的实验室计算机
 
 
 ## 练习 1：预配支持高可用性 SAP NetWeaver 部署所需的 Azure 资源
@@ -52,17 +52,19 @@
 
 1.  在 **“使用可用性区域新建具有 2 个 DC 的 AD 域”** 边栏选项卡上，指定以下设置，然后单击 **“购买”** 以发起部署：
 
-    -   订阅：*你的 Azure 订阅名*
+    -   订阅：*你的 Azure 订阅名称*
 
-    -   资源组：*新资源组，名为* **az12003b-ad-RG**
+    -   资源组： *新资源组名称* **az12003b-ad-RG**
 
-    -   位置： *供你部署 Azure VM 的 Azure 区域，该区域离实验室位置最近*
+    -   位置： *可在其中部署 Azure VM 的 Azure 区域*
 
-    -   管理员用户名：**Student**
+    > **备注：** 请考虑使用**美国东部**或**美国东部 2** 区域来部署资源。 
 
-    -   位置：*你在上方指定的同一 Azure 区域*
+    -   管理员用户名：**学生**
 
-    -   密码：**Pa55w.rd1234**
+    -   位置： *你在上方指定的同一 Azure 区域*
+
+    -   密码： **Pa55w.rd1234**
 
     -   域名： **adatum.com**
 
@@ -81,38 +83,44 @@
     > **注意**： 如果在 CustomScriptExtension 组件部署期间，部署失败并出现 **“冲突”** 错误消息，请按以下步骤修正此问题：
 
        - 在 Azure 门户中的 **“部署”** 边栏选项卡上，查看部署详细信息并确定 CustomScriptExtension 安装失败的 VM
+
        - 在 Azure 门户中，导航到上一步中确定的 VM 的边栏选项卡，选择 **“扩展”**，从 **“扩展”** 边栏选项卡中删除 CustomScript 扩展
+
        - 在 Azure 门户中，导航到 **“az12003b-sap-RG”** 资源组边栏选项卡，选择 **“部署”**，选择指向失败部署的链接，然后选择 **“重新部署”**，选择目标资源组 (**az12003b-sap-RG**) 并提供根帐户的密码 (**Pa55w.rd1234**)。
 
 ### 任务 2：提供将托管可运行高可用性 SAP NetWeaver 部署和 S2D 群集的 Azure VM 的子网。
 
-1.  在 Azure 门户中，导航到 **az12003b-RG** 资源组的边栏选项。
+1.  在 Azure 门户中，导航到**az12003b-RG**资源组的边栏选项。
 
 1.  在 **az12003b-AD-RG** 资源组边栏选项卡的资源列表中，找到 **adVNET** 虚拟网络并单击相应条目以显示 **adVNET** 边栏选项卡。
 
-1.  从 **adVNET** 边栏选项卡导航到 **adVNET - 子网**边栏选项卡。 
+1.  从**adVNET** 边栏选项卡导航到 **adVNET - 子网**边栏选项卡。 
 
-1.  从 **adVNET - 子网**边栏选项卡，创建一个新的子网，设置如下：：
+1.  从**adVNET - 子网**边栏选项卡，创建一个新的子网，设置如下：
 
     -   名称： **sapSubnet**
 
     -   地址范围（CIDR 块）：**10.0.1.0/24**
 
-1.  从 **adVNET - 子网**边栏选项卡，创建一个新的子网，设置如下：：
+1.  从**adVNET - 子网**边栏选项卡，创建一个新的子网，设置如下：
 
     -   名称： **s2dSubnet**
 
     -   地址范围（CIDR 块）：**10.0.2.0/24**
 
-1.  在 Azure 门户 Cloud Shell 中启动 PowerShell 会话。 
+1.  在 Azure 门户中，在 Cloud Shell 中启动 PowerShell 会话。 
 
-    > **注意**：如果这是你第一次在当前 Azure 订阅中启动 Cloud Shell，则会要求你创建 Azure 文件共享以保留 Cloud Shell 文件。如果是，请接受默认值，将在自动生成的资源组中创建存储帐户。
+    > **注意**： 如果这是你第一次在当前 Azure 订阅中启动 Cloud Shell，则会要求你创建 Azure 文件共享以保留 Cloud Shell 文件。如果是，请接受默认值，将在自动生成的资源组中创建存储帐户。
 
-1.  在 Cloud Shell 窗格中，运行以下命令以标识在上一个任务中创建的虚拟网络：
+1. 在 Cloud Shell 窗格中运行以下命令，将变量 `$resourceGroupName` 的值设置为你在上一个任务中预配的资源所在的资源组的名称：
 
     ```
     $resourceGroupName = 'az12003b-ad-RG'
+    ```
 
+1.  在 Cloud Shell 窗格中运行以下命令，标识在上一个任务中创建的虚拟网络：
+
+    ```
     $vNetName = 'adVNet'
 
     $subnetName = 'sapSubnet'
@@ -134,39 +142,49 @@
 
 1.  在 **“自定义部署”** 边栏选项卡的 **“选择模板(免责声明)”** 下拉列表中，键入 **“sap-3-tier-marketplace-image-md”**，然后单击 **“选择模板”**。
 
-    > **注意**：确保使用 Microsoft Edge 或第三方浏览器。请勿使用 Internet Explorer。
+    > **注意**： 确保使用 Microsoft Edge 或第三方浏览器。请勿使用 Internet Explorer。
 
-1.  在 **SAP NetWeaver 3 层（托管磁盘）** 边栏选项卡，使用以下设置启动部署：
+1.  在 **“SAP NetWeaver 3 层(托管磁盘)”** 边栏选项卡上，选择 **“编辑模板”**。
 
-    -   订阅：*你的 Azure 订阅名*
+1.  在 **“编辑模板”** 边栏选项卡上，应用以下更改并选择 **“保存”**：
 
-    -   资源组：*新资源组，名为* **az12003b-sap-RG**
+    -   在第 **197** 行，将 `"dbVMSize": "Standard_E8s_v3",` 替换为 `"dbVMSize": "Standard_D4s_v3",`
 
-    -   位置： *你在本次练习的第一个任务中指定的 Azure 区域*
+    -   在第 **198** 行，将 `"ascsVMSize": "Standard_D2s_v3",` 替换为 `"ascsVMSize": "Standard_DS1_v2",`
+
+    -   在第 **199** 行，将 `"diVMSize": "Standard_D2s_v3",` 替换为 `"diVMSize": "Standard_DS1_v2",`
+
+1.  返回 **“SAP NetWeaver 3 层(托管磁盘)”** 边栏选项卡，使用以下设置启动部署：
+
+    -   订阅： **你的 Azure 订阅名称*
+
+    -   资源组： *新资源组名称* **az12003b-sap-RG**
+
+    -   位置： *你在本练习的第一个任务中指定的 Azure 区域*
 
     -   SAP 系统 ID： **I20**
 
-    -   堆栈类型：**ABAP**
+    -   堆栈类型： **ABAP**
 
-    -   Os 类型：**Windows Server 2016 Datacenter**
+    -   Os 类型： **Windows Server 2016 Datacenter**
 
-    -   Dbtype： **很简单。**
+    -   Dbtype： **SQL**
 
-    -   SAP 系统大小：**演示**
+    -   SAP 系统大小： **演示**
 
-    -   系统可用性：**HA**
+    -   系统可用性： **HA**
 
-    -   管理员用户名：**Student**
+    -   管理员用户名： **学生**
 
-    -   验证类型：**密码**
+    -   验证类型： **密码**
 
-    -   管理员密码或密钥：**Pa55w.rd1234**
+    -   管理员密码或密钥： **Pa55w.rd1234**
 
     -   子网 ID： *你在上一个任务中复制到剪贴板的值*
 
-    -   可用性区域 **1,2**
+    -   可用性区域： **1,2**
 
-    -   位置：**[resourceGroup().location]**
+    -   位置： **[resourceGroup().location]**
 
     -   _Artifacts 位置： **https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/sap-3-tier-marketplace-image-md/**
 
@@ -182,7 +200,7 @@
 
 1.  在实验室计算机上，启动浏览器并浏览：[**https://github.com/robotechredmond/301-storage-spaces-direct-md**](https://github.com/robotechredmond/301-storage-spaces-direct-md)。 
 
-    > **注意**：确保使用 Microsoft Edge 或第三方浏览器。请勿使用 Internet Explorer。
+    > **注意**： 确保使用 Microsoft Edge 或第三方浏览器。请勿使用 Internet Explorer。
 
 1.  在标题为 **使用托管磁盘创建 Windows Server 2016 的 Storage Spaces Direct (S2D) 横向扩展文件服务器（SOFS）群集** 的页面上，点击 **部署到 Azure**。这样会自动将你的浏览器重定向到 Azure 门户并显示 **自定义部署** 边栏选项卡。
 
@@ -190,59 +208,59 @@
 
     -   订阅：**你的 Azure 订阅名**.
 
-    -   资源组：*新资源组，名为* **az12003b-s2d-RG**
+    -   资源组： *新资源组名称* **az12003b-s2d-RG**
 
-    -   区域：*在本练习的上一个任务中部署 Azure VM 的相同 Azure 区域*
+    -   区域： *在本练习的上一个任务中部署 Azure VM 的相同 Azure 区域*
 
-    -   名称前缀：**i20**
+    -   名称前缀： **i20**
 
-    -   VM 大小：**标准 D4S\_v3**
+    -   VM 大小： **标准 D4S\_v3**
 
-    -   启用加速网络：**是**
+    -   启用加速网络： **是**
 
     -   映像 SKU： **2016-Datacenter-Server-Core**
 
     -   VM 数量： **2**
 
-    -   VM 磁盘大小 **128**
+    -   VM 磁盘大小： **128**
 
-    -   VM 磁盘数量：**3**
+    -   VM 磁盘数量： **3**
 
-    -   现有域名：**adatum.com**
+    -   现有域名： **adatum.com**
 
-    -   管理员用户名：**Student**
+    -   管理员用户名： **学生**
 
-    -   管理员密码：**Pa55w.rd1234**
+    -   管理员密码： **Pa55w.rd1234**
 
     -   现有虚拟网络 RG 名： **az12003b-ad-RG**
 
-    -   现有虚拟网络名：**adVNet**
+    -   现有虚拟网络名： **adVNet**
 
-    -   现有子网名：**s2dSubnet**
+    -   现有子网名： **s2dSubnet**
 
     -   Sofs 名： **sapglobalhost**
 
     -   共享名： **sapmnt**
 
-    -   计划更新日：**星期日**
+    -   计划更新日： **星期日**
 
-    -   计划更新时间：**3:00**
+    -   计划更新时间： **3:00**
 
-    -   已启用实时反恶意软件：**false**
+    -   已启用实时反恶意软件： **false**
 
-    -   已启用预定反恶意软件：**false**
+    -   已启用预定反恶意软件： **false**
 
-    -   计划反恶意软件时间：**120**
+    -   计划反恶意软件时间： **120**
 
     -   \ _artifacts 位置： **接受默认值**
 
-    -   _artifacts 位置Sas 令牌**保留默认值**
+    -   _artifacts 位置Sas 令牌： **保留默认值**
 
-    -   我同意以上条款和条件：*已启用*
+    -   我同意以上条款和条件： *已启用*
 
 1.  该部署可能需要约 20 分钟。不要等待部署完成，而是继续执行下一个任务。
 
-### 任务 5：部署跳转主机
+### 任务 6：部署跳转主机
 
    > **注意**： 由于无法从 Internet 访问你在上一个任务中部署的 Azure VM，因此你将部署运行 Windows Server 2016 Datacenter 的 Azure VM 作为跳转主机。 
 
@@ -252,67 +270,67 @@
 
 1.  使用以下设置预配 Azure VM：
 
-    -   订阅：*你的 Azure 订阅名*
+    -   订阅： *你的 Azure 订阅名称*
 
-    -   资源组：*新资源组，名为* **az12003b-dmz-RG**
+    -   资源组： *新资源组名为* **az12003b-dmz-RG**
 
-    -   虚拟机名称：**az12003b-vm0**
+    -   虚拟机名称：* *az12003b-vm0**
 
-    -   区域：*在本练习的上一个任务中部署 Azure VM 的相同 Azure 区域*
+    -   区域： *在本练习的上一个任务中部署 Azure VM 的相同 Azure 区域*
 
-    -   可用性选项：**无需基础结构冗余**
+    -   可用性选项： **无需基础结构冗余**
 
-    -   图像：**Windows Server 2019 Datacenter**
+    -   映像： **Windows Server 2019 Datacenter**
 
-    -   大小：**标准 D2s v3**
+    -   大小： **标准 DS1 v2**
 
-    -   用户名称：**Student**
+    -   用户名称： **学生**
 
-    -   密码：**Pa55w.rd1234**
-
-    -   公共入站端口：**允许选定的端口**
-
-    -   选择入站端口：**RDP (3389)**
-
-    -   是否已拥有 Windows 许可证？：**否**
-
-    -   OS 磁盘类型：**标准 HDD**
-
-    -   虚拟网络：**adVNET**
-
-    -   子网：名为 **“bastionSubnet (10.0.255.0/24)”** *的新子网*
-
-    -   公共 IP： *新 IP 地址名为* **az12003b-vm0-ip**
-
-    -   NIC 网络安全组：**基本**
+    -   密码： **Pa55w.rd1234**
 
     -   公共入站端口： **允许选定的端口**
 
-    -   选择入站端口：**RDP (3389)**
+    -   选择入站端口： **RDP (3389)**
 
-    -   加速网络：**关闭**
+    -   是否已拥有 Windows 许可证？： **否**
 
-    -   将此虚拟机置于现有负载均衡解决方案之后：**否**
+    -   OS 磁盘类型： **标准 HDD**
 
-    -   启动诊断：**关闭**
+    -   虚拟网络： **adVNET**
 
-    -   OS 来宾诊断：**关闭**
+    -   子网：名为 **“dmzSubnet (10.0.255.0/24)”** *的新子网*
 
-    -   系统分配的托管标识：**关闭**
+    -   公共 IP： *新 IP 地址名为* **az12003b-vm0-ip**
 
-    -   使用 AAD 凭据登录（预览）：**关闭**
+    -   NIC 网络安全组： **基本**
 
-    -   启用自动关闭：**关闭**
+    -   公共入站端口： **允许选定的端口**
 
-    -   启用备份：**关闭**
+    -   选择入站端口： **RDP (3389)**
 
-    -   扩展：*无*
+    -   加速网络： **关闭**
 
-    -   标签：**无**
+    -   将此虚拟机置于现有负载均衡解决方案之后： **否**
+
+    -   启动诊断： **关闭**
+
+    -   OS 来宾诊断： **关闭**
+
+    -   系统分配的托管标识： **关闭**
+
+    -   使用 AAD 凭据登录（预览）： **关闭**
+
+    -   启用自动关闭： **关闭**
+
+    -   启用备份： **关闭**
+
+    -   扩展： *无*
+
+    -   标签： **无**
 
 1.  等待预配完成。这可能需要几分钟。
 
-> **结果**：完成本练习后，你已配置了支持高可用性 SAP NetWeaver 部署所需的 Azure 资源
+> **结果**： 完成本练习后，你已配置了支持高可用性 SAP NetWeaver 部署所需的 Azure 资源
 
 
 ## 练习 2：配置运行 Windows 的 Azure VM 的操作系统，以支持高可用性 SAP NetWeaver 部署
@@ -327,15 +345,19 @@
 
 1.  在 Azure 门户中，导航到名为 **adVNET** 的虚拟网络边栏选项卡，该虚拟网络已在本实验室的第一个练习中自动预配。
 
-1.  显示 **adVNET - DNS 服务器**边栏选项卡，请注意，虚拟网络配置了专用 IP 地址，该地址是分配给本实验室第一个练习中部署的域控制器，作为其 DNS 服务器。
+1.  显示 **“adVNET - DNS 服务器”** 边栏选项卡，请注意，虚拟网络配置了专用 IP 地址，该地址被分配给本实验室第一个练习中部署的域控制器作为其 DNS 服务器。
 
-1.  在 Azure 门户 Cloud Shell 中启动 PowerShell 会话。 
+1.  在 Azure 门户中，在 Cloud Shell 中启动 PowerShell 会话。 
 
-1.  在 Cloud Shell 窗格中，运行以下命令，将你在上一个练习的第三个任务中部署的 Windows Server Azure VM 加入到 **adatum.com** Active Directory 域：
+1. 在 Cloud Shell 窗格中运行以下命令，将变量 `$resourceGroupName` 的值设置为你在上一个任务中预配的资源所在的资源组的名称：
 
     ```
     $resourceGroupName = 'az12003b-sap-RG'
+    ```
 
+1.  在 Cloud Shell 窗格中运行以下命令，将你在上一个练习的第三个任务中部署的 Windows Server Azure VM 加入到 **adatum.com** Active Directory 域:
+
+    ```
     $location = (Get-AzResourceGroup -Name $resourceGroupName).Location
 
     $settingString = '{"Name": "adatum.com", "User": "adatum.com\\Student", "Restart": "true", "Options": "3"}'
@@ -349,19 +371,19 @@
 
 ### 任务 2：检查 Azure VM 的数据库层的存储配置。
 
-1.  在实验室计算机的 Azure 门户中，导航到**az12003b-vm0** 边栏选项卡。
+1.  在实验室计算机的 Azure 门户中，导航到 **az12003b-vm0** 边栏选项卡。
 
 1.  在**az12003b-vm0** 边栏选项卡中，使用远程桌面连接到 Azure VM az12003b-vm0。出现提示时，请提供以下凭据：
 
-    -   登录身份： **student**
+    -   登录身份： **学生**
 
-    -   密码：**Pa55w.rd1234**
+    -   密码： **Pa55w.rd1234**
 
 1.  从与 az12003b-vm0 的 RDP 会话中，使用远程桌面连接 **i20-db-0.adatum.com** Azure VM。出现提示时，请提供以下凭据：
 
-    -   登录为：**ADATUM\\Student**
+    -   登录为： **ADATUM\\Student**
 
-    -   密码：**Pa55w.rd1234**
+    -   密码： **Pa55w.rd1234**
 
 1.  使用远程桌面连接 **i20-db-1.adatum.com** 具有相同凭据的 Azure VM。
 
@@ -382,50 +404,50 @@
     Invoke-Command $nodes {Install-WindowsFeature RSAT -IncludeAllSubFeature -Restart} 
     ```
 
-    > **注意**：这可能重启所有四个 Azure VM 的来宾操作系统。
+    > **注意**： 这可能重启所有四个 Azure VM 的来宾操作系统。
 
-1.  在实验室计算机的 Azure 门户上单击**新建资源**。
+1.  在实验室计算机的 Azure 门户上单击 **“+ 创建资源”**。
 
 1.  从**新建**边栏选项卡，使用以下设置新建**存储帐户**：
 
-    -   订阅：*你的 Azure 订阅名*
+    -   订阅：*你的 Azure 订阅名称*
 
-    -   资源组：**az12003b-sap-RG**
+    -   资源组：将托管高可用性 SAP NetWeaver 部署的 Azure VM 部署到的资源组的名称**
 
-    -   存储帐户名称：*任何由 3 到 24 个字母和数字组成的唯一名称*
+    -   存储帐户名称：任何由 3 到 24 个字母和数字组成的唯一名称**
 
-    -   位置： *在上一个任务中部署 Azure VM 的相同 Azure 区域*
+    -   位置：*在上一个任务中部署 Azure VM 的相同 Azure 区域*
 
     -   性能： **标准**
 
-    -   帐户种类：**存储（常规用途 v1）**
+    -   帐户种类： **存储（常规用途 v1）**
 
-    -   复制：**本地冗余存储 (LRS)**
+    -   复制： **本地冗余存储 (LRS)**
 
-    -   连接方式：**公共终结点（所有网络）**
+    -   连接方式： **公共终结点（所有网络）**
 
-    -   需要安全传输：**已启用**
+    -   需要安全传输： **已启用**
 
     -   大文件共享： **禁用**
 
-    -   Blob 软删除：**禁用**
+    -   Blob 软删除： **禁用**
 
-    -   分层命名空间：**禁用**
+    -   分层命名空间： **禁用**
 
 
 ### 任务 4：在运行 Windows Server 2016 的 Azure VM 上配置故障转移群集，以支持 SAP NetWeaver 安装的高可用性数据库层。
 
 1.  如果需要，在与 az12003b-vm0 的 RDP 会话中，使用远程桌面重新连接到 **i20-db-0.adatum.com** Azure VM。出现提示时，请提供以下凭据：
 
-    -   登录为：**ADATUM\\Student**
+    -   登录为： **ADATUM\\Student**
 
-    -   密码：**Pa55w.rd1234**
+    -   密码： **Pa55w.rd1234**
 
 1.  在与 i20-db-0.adatum.com 的 RDP 会话中，，在服务器管理器中导航到**本地服务器**视图并关闭 **IE 增强安全配置**。
 
 1.  在与 i20-db-0.adatum.com 的 RDP 会话中，从服务器管理器的**工具**菜单中，启动 **Active Directory 管理中心**。
 
-1.  在 Active Directory 管理中心中，在 adatum.com 域的根目录下创建一个名为**群集**的新组织单位。
+1.  在 Active Directory 管理中心，在 adatum.com 域的根目录下创建一个名为 **“群集”** 的新组织单位。
 
 1.  在 Active Directory 管理中心中，将 i20-db-0 和 i20-db-1 的计算机帐户从计算机容器移动到 群集组织单位。
 
@@ -453,7 +475,7 @@
 
 1.  回到 **选择用户、计算机、服务帐户或组** 对话框，在 **输入要选择的对象名称**，输入 **az12003b-db-cl0** 并单击 **确定**。
 
-1.  在**群集权限条目**窗口，确保**允许**出现在**类型**下拉列表。接下来，在**适用于**下拉列表，选择**此对象和所有后代对象**。在**权限**列表中，选择**创建计算机对象**和**删除计算机对象**复选框，然后单击**确认**两次。
+1.  在 **“群集权限条目”** 窗口中，确保 **“允许”** 显示在 **“类型”** 下拉列表中。接下来，在**适用于**下拉列表，选择**此对象和所有后代对象**。在**权限**列表中，选择**创建计算机对象**和**删除计算机对象**复选框，然后单击**确认**两次。
 
 1.  在 Windows PowerShell ISE 会话中，通过运行以下命令安装 Azure PowerShell 模块：
 
@@ -466,16 +488,20 @@
 1.  在 Windows PowerShell ISE 会话中，通过运行以下命令使用 Azure AD 凭据进行身份验证：
 
     ```
-    添加 AzAccount
+    Add-AzAccount
     ```
 
-    > **注意**：出现提示时，使用你在本实验室中使用的 Azure 订阅的所有者或参与者角色登录工作或学校或个人 Microsoft 帐户。
+    > **注意**： 出现提示时，使用你在本实验室中使用的 Azure 订阅的所有者或参与者角色登录工作或学校或个人 Microsoft 帐户。
 
-1.  在 Windows PowerShell ISE 会话中，通过运行以下命令设置新群集的云见证仲裁：
+1.  在 Windows PowerShell ISE 会话中运行以下命令，将变量 `$resourceGroupName` 的值设置为你在上一个任务中预配的存储帐户所在的资源组的名称：
 
     ```
     $resourceGroupName = 'az12003b-sap-RG'
+    ```
 
+1.  在 Windows PowerShell ISE 会话中运行以下命令，设置新群集的 Cloud Witness Quorum：
+
+    ```
     $cwStorageAccountName = (Get-AzStorageAccount -ResourceGroupName $resourceGroupName)[0].StorageAccountName
 
     $cwStorageAccountKey = (Get-AzStorageAccountKey -ResourceGroupName $resourceGroupName -Name $cwStorageAccountName).Value[0]
@@ -530,7 +556,7 @@
 
 1.  回到 **选择用户、计算机、服务帐户或组** 对话框，在 **输入要选择的对象名称**，输入 **az12003b-ascs-cl0** 并单击 **确定**。
 
-1.  在**群集权限条目**窗口，确保**允许**出现在**类型**下拉列表。接下来，在**适用于**下拉列表，选择**此对象和所有后代对象**。在**权限**列表中，选择**创建计算机对象**和**删除计算机对象**复选框，然后单击**确认**两次。
+1.  在 **“群集权限条目”** 窗口中，确保 **“允许”** 显示在 **“类型”** 下拉列表中。接下来，在**适用于**下拉列表，选择**此对象和所有后代对象**。在**权限**列表中，选择**创建计算机对象**和**删除计算机对象**复选框，然后单击**确认**两次。
 
 1.  在 Windows PowerShell ISE 会话中，通过运行以下命令安装 Azure PowerShell 模块：
 
@@ -543,16 +569,20 @@
 1.  在 Windows PowerShell ISE 会话中，通过运行以下命令使用 Azure AD 凭据进行身份验证：
 
     ```
-    添加 AzAccount
+    Add-AzAccount
     ```
 
-    > **注意**：出现提示时，使用你在本实验室中使用的 Azure 订阅的所有者或参与者角色登录工作或学校或个人 Microsoft 帐户。
+    > **注意**： 出现提示时，使用你在本实验室中使用的 Azure 订阅的所有者或参与者角色登录工作或学校或个人 Microsoft 帐户。
 
-1.  在 Windows PowerShell ISE 会话中，通过运行以下命令设置新群集的云见证仲裁：
+1.  在 Windows PowerShell ISE 会话中运行以下命令，将变量 `$resourceGroupName` 的值设置为你之前在本练习中预配的存储帐户所在的资源组的名称：
 
     ```
-    $resourceGroupName = 'az12003b-sap-RG'liveid
+    $resourceGroupName = 'az12003b-sap-RG'
+    ```
 
+1.  在 Windows PowerShell ISE 会话中运行以下命令，设置群集的 Cloud Witness Quorum：
+
+    ```
     $cwStorageAccountName = (Get-AzStorageAccount -ResourceGroupName $resourceGroupName)[0].StorageAccountName
 
     $cwStorageAccountKey = (Get-AzStorageAccountKey -ResourceGroupName $resourceGroupName -Name $cwStorageAccountName).Value[0]
@@ -569,7 +599,7 @@
 
 在本任务中，你将在 **\\\\GLOBALHOST\\sapmnt**共享设置共享级别权限。
 
-> **注意**：默认情况下，完全控制权限只授予 ADATUM\Student 帐户。 
+> **注意**： 默认情况下，完全控制权限只授予 ADATUM\Student 帐户。 
 
 1.  在与 i20-ascs-0.adatum.com 的远程桌面会话中，从 **Windows PowerShell ISE** 窗口运行以下命令：
 
@@ -609,7 +639,7 @@
     }
     ```
 
-> **结果**：完成本练习后，你已配置运行 Windows 的 Azure VM 操作系统，以支持高可用性 SAP NetWeaver 部署
+> **结果**： 完成本练习后，你已配置运行 Windows 的 Azure VM 操作系统，以支持高可用性 SAP NetWeaver 部署
 
 
 ## 练习 3：删除实验室资源
@@ -622,23 +652,28 @@
 
 1. 在门户顶部，单击 **Cloud Shell** 图标打开“Cloud Shell”窗格，然后选择“PowerShell”作为 Shell。
 
-1. 在门户网站底部的 **Cloud Shell** 命令提示符下，键入以下命令并按**Enter 键**列出你在本实验中创建的所有资源组：
+1. 在 Cloud Shell 窗格中运行以下命令，将变量 `$resourceGroupName` 的值设置为你在本实验室的第一个练习中预配的那对 **Windows Server 2019 Datacenter** Azure VM 所在的资源组的名称：
 
     ```
-    Get-AzResourceGroup | Where-Object {$_.ResourceGroupName -like 'az12003b-*'} | Select-Object ResourceGroupName
+    $resourceGroupNamePrefix = 'az12003b-'
+    ```
+
+1. 在 Cloud Shell 窗格中运行以下命令，列出你在本实验室中创建的所有资源组：
+
+    ```
+    Get-AzResourceGroup | Where-Object {$_.ResourceGroupName -like "$resourceGroupNamePrefix*"} | Select-Object ResourceGroupName
     ```
 
 1. 验证输出结果中是否仅包含你在本实验室中创建的资源组。这些组将在下一个任务中删除。
 
 #### 任务 2：删除资源组
 
-1. 在 **Cloud Shell** 命令提示符处，键入以下命令并按 **Enter** 以删除你在本实验中创建的资源组
+1. 在 Cloud Shell 窗格中运行以下命令，删除你在本实验室中创建的资源组
 
     ```
-    Get-AzResourceGroup | Where-Object {$_.ResourceGroupName -like 'az12003b-*'} | Remove-AzResourceGroup -Force  
+    Get-AzResourceGroup | Where-Object {$_.ResourceGroupName -like "$resourceGroupNamePrefix*"} | Remove-AzResourceGroup -Force  
     ```
 
-1. 关闭门户底部的 **Cloud Shell** 提示。
+1. 关闭“Cloud Shell”窗格。
 
-
-> **结果**：完成本练习后，你已经删除了本实验中使用的资源。
+> **结果：** 完成本练习后，你已经删除了本实验中使用的资源。
